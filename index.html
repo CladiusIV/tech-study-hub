@@ -3,21 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <title>Tech Study Hub</title>
-  <!-- Core Theme -->
-  <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@5/dist/themes/core.min.css" /> -->
-  <!-- Docsify Theme CSS from CDN -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@5/lib/themes/vue.css">
-  <!-- Core Dark - Dark Mode Only (add-on) -->
-  <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@5/dist/themes/addons/core-dark.min.css" media="(prefers-color-scheme: dark)" /> -->
+  <!-- Docsify v5 Core Theme -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@5/dist/themes/core.min.css" />
+  <!-- Core Dark add-on: switches to dark colors automatically based on OS/browser preference -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@5/dist/themes/addons/core-dark.min.css" media="(prefers-color-scheme: dark)" />
   <style>
-    .app-version {
-      padding: 10px 0 20px 20px;
+    /* core-dark forces iframes to color-scheme:light so generic embeds
+       don't look broken. Our interview-bank pages have their own proper
+       dark-mode styles, so let them follow the OS/browser preference. */
+    iframe, iframe *, iframe[src], iframe[src] * {
+      color-scheme: light dark !important;
+    }
+
+    /* Version subtitle, shown under the site name in the sidebar */
+    .app-subtitle {
+      margin: -12px 20px 1.5rem;
       font-size: 12px;
-      color: #999;
+      opacity: .6;
+    }
+
+    /* Collapsible sidebar topics, collapsed by default */
+    .sidebar-nav li.group > ul {
+      display: none;
+    }
+    .sidebar-nav li.group.open > ul {
+      display: block;
+    }
+    .sidebar-nav li.group > p {
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      padding-right: 18px;
+    }
+    .sidebar-nav li.group > p::after {
+      content: '\276F';
+      position: absolute;
+      right: 2px;
+      top: 2px;
+      font-size: 10px;
+      opacity: .5;
+      transition: transform .15s ease;
+    }
+    .sidebar-nav li.group.open > p::after {
+      transform: rotate(90deg);
     }
   </style>
 </head>
-<body class="loading sidebar-chevron-left">
+<body>
   <div id="app"></div>
   <!-- Configuration -->
   <script>
@@ -35,21 +67,36 @@
       // first level under GH Pages subpaths. See CHANGELOG.md.
       plugins: [
         function (hook) {
+          // Version subtitle under the title, sourced from package.json
           hook.mounted(function () {
             var sidebar = document.querySelector('.sidebar');
-            if (!sidebar || sidebar.querySelector('.app-version')) return;
-            // package.json is the single source of truth for the version
-            // number shown here — nothing in this file should hardcode it.
+            if (!sidebar || sidebar.querySelector('.app-subtitle')) return;
             fetch('package.json')
               .then(function (res) { return res.json(); })
               .then(function (pkg) {
-                if (!pkg.version) return;
-                var footer = document.createElement('div');
-                footer.className = 'app-version';
-                footer.textContent = 'v' + pkg.version;
-                sidebar.appendChild(footer);
+                var appName = sidebar.querySelector('.app-name');
+                if (!appName || !pkg.version) return;
+                var subtitle = document.createElement('div');
+                subtitle.className = 'app-subtitle';
+                subtitle.textContent = 'v' + pkg.version;
+                appName.insertAdjacentElement('afterend', subtitle);
               })
               .catch(function () {});
+          });
+
+          // Collapsible sidebar topics: collapsed by default, auto-open the
+          // topic containing the current page, click a topic label to toggle
+          hook.doneEach(function () {
+            var currentHash = window.location.hash || '#/';
+            document.querySelectorAll('.sidebar-nav li.group').forEach(function (li) {
+              var label = li.querySelector(':scope > p') || li;
+              var containsActive = !!li.querySelector('a[href="' + currentHash + '"]');
+              li.classList.toggle('open', containsActive);
+              label.onclick = function (e) {
+                if (e.target.closest('a')) return;
+                li.classList.toggle('open');
+              };
+            });
           });
         }
       ]
