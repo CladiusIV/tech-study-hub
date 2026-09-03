@@ -27,6 +27,12 @@
       loadSidebar: true, // Enables sidebar generation from _sidebar.md
       subMaxLevel: 2,
       sidebarDisplayLevel: 2, // Controls initial expanded depth
+      alias: {
+        // Redirects nested _sidebar.md lookups to the root file. See CHANGELOG.md.
+        '/.*/_sidebar.md': '/_sidebar.md',
+      },
+      // relativePath left disabled (default) — breaks sidebar nav past the
+      // first level under GH Pages subpaths. See CHANGELOG.md.
       plugins: [
         function (hook) {
           hook.mounted(function () {
