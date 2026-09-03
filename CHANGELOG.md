@@ -4,7 +4,7 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project uses [Semantic Versioning](https://semver.org/) pre-release tags.
 
-## [Unreleased]
+## [0.1.1-alpha] - 2026-09-03
 
 ### Fixed
 - **Sidebar navigation breaking after the first click, GitHub Pages only.**
@@ -45,8 +45,9 @@ and this project uses [Semantic Versioning](https://semver.org/) pre-release tag
   for a real bug (and was masking the two real ones above). Added an
   `alias` redirecting every such lookup straight to the root file, so
   there's exactly one `_sidebar.md` request, always 200.
-- Added `.nojekyll` so GitHub Pages' Jekyll pipeline doesn't strip
-  underscore-prefixed files (`_sidebar.md`) before serving.
+- The sidebar version footer now reads its number from `package.json` at
+  runtime instead of a hardcoded string in `index.html`, so bumping the
+  version never means touching more than one file again.
 
 ## [0.1.0-alpha] - 2026-09-03
 
@@ -57,6 +58,11 @@ and this project uses [Semantic Versioning](https://semver.org/) pre-release tag
 - Mobile section: Flutter, React Native, Android (Kotlin/KMP), and iOS (Swift) (overview, core concepts, interview questions, code snippets).
 - Standalone interview-question banks (React, Angular, Python) embedded via iframe with a working "Open in Full Window" and "Download HTML" action.
 - Versioning system (this changelog, `package.json` version field, sidebar version footer).
+
+### Fixed
+- Added `.nojekyll` so GitHub Pages' Jekyll pipeline doesn't strip
+  underscore-prefixed files (`_sidebar.md`) before serving — without this
+  the sidebar never loaded at all once deployed.
 
 ### Notes
 - Most section content is still placeholder ("Under construction").
