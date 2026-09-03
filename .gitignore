@@ -1,0 +1,28 @@
+# Package Managers & Dependencies
+node_modules/
+jspm_packages/
+.pnp/
+.pnp.js
+
+# Python virtual environments
+venv/
+.venv/
+env/
+ENV/
+bin/
+lib/
+
+# IDEs and Code Editors
+.vscode/
+!.vscode/extensions.json
+
+# AI Assistants
+.claude/launch.json
+
+# Environment Variables & Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem

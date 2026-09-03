@@ -3,20 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <title>Tech Study Hub</title>
+  <!-- Core Theme -->
+  <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@5/dist/themes/core.min.css" /> -->
   <!-- Docsify Theme CSS from CDN -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@5/lib/themes/vue.css">
+  <!-- Core Dark - Dark Mode Only (add-on) -->
+  <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@5/dist/themes/addons/core-dark.min.css" media="(prefers-color-scheme: dark)" /> -->
+  <style>
+    .app-version {
+      padding: 10px 0 20px 20px;
+      font-size: 12px;
+      color: #999;
+    }
+  </style>
 </head>
-<body>
+<body class="loading sidebar-chevron-left">
   <div id="app"></div>
+  <!-- Configuration -->
   <script>
     window.$docsify = {
       name: 'Tech Study Hub',
       repo: '',
       loadSidebar: true, // Enables sidebar generation from _sidebar.md
-      subMaxLevel: 2
+      subMaxLevel: 2,
+      sidebarDisplayLevel: 2, // Controls initial expanded depth
+      plugins: [
+        function (hook) {
+          hook.mounted(function () {
+            var sidebar = document.querySelector('.sidebar');
+            if (sidebar && !sidebar.querySelector('.app-version')) {
+              var footer = document.createElement('div');
+              footer.className = 'app-version';
+              footer.textContent = 'v0.1.0-alpha';
+              sidebar.appendChild(footer);
+            }
+          });
+        }
+      ]
     }
   </script>
   <!-- Docsify Engine from CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/docsify@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify@5"></script>
 </body>
 </html>
