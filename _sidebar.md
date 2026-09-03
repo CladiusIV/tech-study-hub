@@ -48,7 +48,7 @@
     * [Interview Questions](mobile/ios-swift/interview-questions/qa.md)
     * [Code Snippets](mobile/ios-swift/code-snippets/swiftui-patterns.md)
 
-* [**System Design**](system-design/README.md)
+* **System Design**
   * [Roadmap & Architecture](system-design/README.md)
   * Concepts
     * [Scalability & Load Balancing](system-design/concepts/scalability.md)
@@ -59,7 +59,7 @@
     * [Rate Limiter](system-design/case-studies/rate-limiter.md)
   * [Resources](system-design/resources/README.md)
 
-* [**General Preparation**](general-prep/computer-science/oop-solid-ds.md)
+* **General Preparation**
   * [CS Fundamentals](general-prep/computer-science/oop-solid-ds.md)
   * [Behavioral (STAR Method)](general-prep/behavioral/star-answers.md)
   * [Resources & Cheat Sheets](general-prep/resources/cheat-sheets.md)
