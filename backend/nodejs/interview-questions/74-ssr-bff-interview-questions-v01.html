@@ -1,0 +1,1429 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>74 Interview Questions — Senior SSR & BFF Engineer</title>
+<style>
+:root{
+  --bg:#fafaf8; --surface:#fff; --surface-2:#f0efec; --border:#ddd9d2;
+  --ink:#191713; --ink-2:#524d45; --ink-3:#888177;
+  --accent:#6d28d9; --accent-soft:#efe6fc;
+  --say:#1f4d7a; --say-soft:#e5eef7;
+  --warn:#8a5712; --warn-soft:#fbf0da;
+  --bad:#8f2f2f; --bad-soft:#f9e6e3;
+  --ok:#1f7a4d; --ok-soft:#e3f2e9;
+  --code-bg:#f3f1ed; --code-ink:#191713;
+  --kw:#8b2f72; --str:#1f6b45; --com:#8a8378; --num:#96530f; --typ:#1f4d7a;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121412; --surface:#1a1d1a; --surface-2:#222522; --border:#323732;
+  --ink:#ecebe6; --ink-2:#b0aba2; --ink-3:#827c74;
+  --accent:#a78bfa; --accent-soft:#241b38;
+  --say:#7db4e8; --say-soft:#16222e;
+  --warn:#d9a441; --warn-soft:#2c2616;
+  --bad:#e08a80; --bad-soft:#2e1e1c;
+  --ok:#63c39f; --ok-soft:#152b22;
+  --code-bg:#0e100e; --code-ink:#ecebe6;
+  --kw:#d98ac4; --str:#8fd6a8; --com:#6e6a63; --num:#e0a86a; --typ:#7db4e8;}}
+:root[data-theme="dark"]{
+  --bg:#121412; --surface:#1a1d1a; --surface-2:#222522; --border:#323732;
+  --ink:#ecebe6; --ink-2:#b0aba2; --ink-3:#827c74;
+  --accent:#a78bfa; --accent-soft:#241b38;
+  --say:#7db4e8; --say-soft:#16222e;
+  --warn:#d9a441; --warn-soft:#2c2616;
+  --bad:#e08a80; --bad-soft:#2e1e1c;
+  --ok:#63c39f; --ok-soft:#152b22;
+  --code-bg:#0e100e; --code-ink:#ecebe6;
+  --kw:#d98ac4; --str:#8fd6a8; --com:#6e6a63; --num:#e0a86a; --typ:#7db4e8;}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16.5px/1.68 ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px;display:grid;
+  grid-template-columns:250px minmax(0,1fr);gap:48px;align-items:start}
+@media(max-width:1000px){.wrap{grid-template-columns:1fr;gap:0}}
+
+nav.side{position:sticky;top:0;max-height:100vh;overflow-y:auto;padding:30px 0 60px;
+  font-size:13.5px;line-height:1.45;scrollbar-width:none;-ms-overflow-style:none}
+nav.side::-webkit-scrollbar{display:none}
+@media(max-width:1000px){nav.side{position:static;max-height:none;
+  border-bottom:1px solid var(--border);margin-bottom:24px;padding-bottom:20px}}
+nav.side .brand{font-weight:800;font-size:15px;letter-spacing:-.01em;margin-bottom:3px;display:flex;align-items:center;gap:7px}
+nav.side .brand svg{flex:none}
+nav.side .bsub{font-size:11.5px;color:var(--ink-3);margin-bottom:16px}
+nav.side a{display:flex;justify-content:space-between;gap:8px;color:var(--ink-2);
+  text-decoration:none;padding:3px 0 3px 10px;border-left:2px solid transparent}
+nav.side a:hover{color:var(--accent);border-left-color:var(--accent)}
+nav.side a .c{color:var(--ink-3);font-size:11px;font-variant-numeric:tabular-nums}
+nav.side a.p{display:block;font-weight:700;color:var(--ink);margin-top:14px;padding-left:0;
+  border-left:none;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+nav.side a.p:hover{border-left:none}
+nav.side a.active{color:var(--accent);border-left-color:var(--accent);font-weight:700}
+#find{width:100%;margin:0 0 10px;padding:7px 10px;border:1px solid var(--border);
+  border-radius:7px;background:var(--surface);color:var(--ink);font:inherit;font-size:13px}
+#find:focus{outline:none;border-color:var(--accent)}
+.fbar{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 8px}
+.fbar button{font:inherit;font-size:11px;font-weight:700;letter-spacing:.03em;
+  padding:4px 8px;border-radius:20px;border:1px solid var(--border);
+  background:var(--surface);color:var(--ink-2);cursor:pointer}
+.fbar button:hover{border-color:var(--accent);color:var(--accent)}
+.fbar button.on{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.tagbar{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 14px}
+.tagbar button{font:inherit;font-size:10.5px;font-weight:600;
+  padding:3px 8px;border-radius:20px;border:1px dashed var(--border);
+  background:transparent;color:var(--ink-3);cursor:pointer}
+.tagbar button:hover{border-color:var(--accent);color:var(--accent)}
+.tagbar button.on{background:var(--accent-soft);border-color:var(--accent);border-style:solid;color:var(--accent)}
+#hits{font-size:11.5px;color:var(--ink-3);margin:0 0 6px}
+#roadmap{margin:12px 0 0;padding-top:12px;border-top:1px solid var(--border)}
+#roadmap .lbl{display:block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+#roadmap p{font-size:11.5px;color:var(--ink-3);line-height:1.55;margin:0;max-width:none}
+#progress{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--border)}
+#progress .plabel{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-3);margin-bottom:5px}
+#progress .pbar{height:6px;border-radius:4px;background:var(--surface-2);overflow:hidden}
+#progress .pfill{height:100%;background:var(--accent);width:0%;transition:width .25s}
+#progress .preset{margin-top:8px;font-size:11px;color:var(--ink-3);background:none;border:none;
+  text-decoration:underline;cursor:pointer;padding:0}
+
+main{padding:30px 0 120px;min-width:0}
+header.top{border-bottom:2px solid var(--ink);padding-bottom:22px;margin-bottom:10px}
+.kicker{font-size:11.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3);margin:0 0 10px}
+h1{font-size:clamp(29px,5vw,42px);line-height:1.08;margin:0 0 14px;letter-spacing:-.03em}
+.lede{color:var(--ink-2);margin:0;font-size:17px;max-width:64ch}
+
+h2{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);
+  margin:70px 0 6px;font-weight:800;scroll-margin-top:20px}
+h3{font-size:27px;line-height:1.2;margin:6px 0 14px;letter-spacing:-.022em;scroll-margin-top:20px}
+h4{font-size:20px;margin:42px 0 12px;letter-spacing:-.012em;scroll-margin-top:20px;
+  padding-bottom:7px;border-bottom:1px solid var(--border)}
+p{margin:0 0 14px;max-width:76ch}
+ul,ol{margin:0 0 14px;padding-left:22px;max-width:76ch}
+li{margin:5px 0}
+a{color:var(--accent)}
+hr{border:none;border-top:1px solid var(--border);margin:46px 0}
+.sec-intro{color:var(--ink-2);font-size:15.5px;max-width:74ch;margin:0 0 6px}
+
+code{background:var(--code-bg);padding:1px 5px;border-radius:4px;font-size:.86em;
+  font-family:ui-monospace,"Cascadia Code",Consolas,monospace}
+pre{background:var(--code-bg);color:var(--code-ink);border:1px solid var(--border);
+  border-radius:9px;padding:13px 15px;overflow-x:auto;margin:12px 0;font-size:12.5px;line-height:1.58}
+pre code{background:none;padding:0;font-size:inherit}
+.k{color:var(--kw)} .s{color:var(--str)} .c{color:var(--com);font-style:italic}
+.n{color:var(--num)} .t{color:var(--typ)}
+
+.q{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:16px 20px 18px;margin:14px 0;scroll-margin-top:16px}
+.q.done{border-color:var(--ok);box-shadow:inset 3px 0 0 var(--ok)}
+.q .qh{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.q .num{font-family:ui-monospace,Consolas,monospace;font-size:11.5px;color:var(--ink-3);
+  font-weight:700}
+.pop{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  padding:2px 9px;border-radius:20px;white-space:nowrap;display:inline-flex;gap:6px;align-items:center}
+.pop .d{letter-spacing:.12em;font-size:9px}
+.p4{background:var(--bad-soft);color:var(--bad)}
+.p3{background:var(--warn-soft);color:var(--warn)}
+.p2{background:var(--ok-soft);color:var(--ok)}
+.p1{background:var(--surface-2);color:var(--ink-3);border:1px solid var(--border)}
+.tag{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  padding:2px 8px;border-radius:20px;background:var(--surface-2);color:var(--ink-2);
+  border:1px solid var(--border);cursor:pointer}
+.tag:hover{border-color:var(--accent);color:var(--accent)}
+.done-btn{margin-left:auto;font:inherit;font-size:11px;font-weight:700;padding:4px 10px;
+  border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--ink-2);cursor:pointer}
+.done-btn:hover{border-color:var(--ok);color:var(--ok)}
+.q.done .done-btn{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.q .qtitle{font-size:17.5px;font-weight:700;letter-spacing:-.015em;line-height:1.32;margin:0 0 12px}
+.q .a{font-size:15.2px;max-width:78ch}
+.q .a p{margin:0 0 10px;font-size:15.2px}
+.q .a p:last-child{margin-bottom:0}
+.q .a ul{font-size:15.2px;margin:0 0 10px}
+.say{background:var(--say-soft);border-radius:9px;padding:10px 14px;margin:12px 0 0;
+  border-left:3px solid var(--say);max-width:78ch}
+.say .lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--say);
+  font-weight:800;margin-bottom:4px;display:block}
+.say p{font-size:14.6px;margin:0 0 7px;line-height:1.55} .say p:last-child{margin-bottom:0}
+.trap{background:var(--bad-soft);border-radius:8px;padding:10px 14px;margin:12px 0 0;
+  font-size:14.4px;max-width:78ch}
+.trap .lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--bad);
+  font-weight:800;margin-bottom:4px;display:block}
+.trap p{margin:0}
+.ref{margin:10px 0 0;font-size:12.8px;color:var(--ink-3);max-width:78ch;line-height:1.5}
+.ref b{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+  font-weight:800;margin-right:7px}
+.ref a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--border)}
+.ref a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.ref span.sep{color:var(--border);margin:0 7px}
+.key{background:var(--accent-soft);border-radius:9px;padding:11px 15px;margin:14px 0;max-width:78ch}
+.key .lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);
+  font-weight:800;margin-bottom:5px;display:block}
+.key p{font-size:14.8px;margin:0 0 8px} .key p:last-child{margin-bottom:0}
+.note{border-left:3px solid var(--accent);background:var(--surface);padding:13px 17px;
+  border-radius:0 9px 9px 0;margin:18px 0;font-size:15.5px;max-width:76ch}
+.note p:last-child{margin-bottom:0}
+
+.tblwrap{overflow-x:auto;border:1px solid var(--border);border-radius:10px;
+  background:var(--surface);margin:18px 0}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14.5px}
+th,td{padding:9px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--border)}
+thead th{background:var(--surface-2);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-2);font-weight:700;white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td code{font-size:.85em}
+
+ol.steps{list-style:none;padding:0;counter-reset:s;margin:14px 0;max-width:78ch}
+ol.steps li{counter-increment:s;position:relative;padding:0 0 14px 40px;
+  border-left:1px solid var(--border);margin-left:11px;font-size:15.2px}
+ol.steps li:last-child{border-left-color:transparent;padding-bottom:0}
+ol.steps li::before{content:counter(s);position:absolute;left:-11px;top:-2px;width:22px;height:22px;
+  border-radius:50%;background:var(--accent);color:var(--bg);display:grid;place-items:center;
+  font-size:11.5px;font-weight:800}
+
+.hid{display:none !important}
+.empty{color:var(--ink-3);font-size:15px;margin:30px 0}
+footer{margin-top:70px;padding-top:22px;border-top:1px solid var(--border);
+  font-size:13px;color:var(--ink-3);max-width:76ch}
+.top-actions{display:flex;gap:8px;margin-top:16px}
+.top-actions button{font:inherit;font-size:12px;font-weight:700;padding:6px 12px;border-radius:20px;
+  border:1px solid var(--border);background:var(--surface);color:var(--ink-2);cursor:pointer}
+.top-actions button:hover{border-color:var(--accent);color:var(--accent)}
+@media print{nav.side{display:none}.wrap{grid-template-columns:1fr}
+  .q,.say,.key,.note,pre{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="side">
+  <div class="brand">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 12h16M4 6h16M4 18h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="19" cy="18" r="2.2" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>
+    SSR &amp; BFF interview bank
+  </div>
+  <div class="bsub">Senior SSR &amp; BFF Engineer · EN</div>
+  <input id="find" type="search" placeholder="Search… (Ctrl+K)" autocomplete="off">
+  <div class="fbar">
+    <button data-pop="0" class="on">All</button>
+    <button data-pop="4">Near-certain</button>
+    <button data-pop="3">+Very common</button>
+    <button data-pop="2">+Common</button>
+  </div>
+  <div class="tagbar" id="tagbar"></div>
+  <div id="hits"></div>
+  <div id="nav">
+    <a class="p" href="#uso">How to use it</a>
+    <a class="p" href="#s1">Rendering fundamentals</a>
+    <a href="#s1">1 · SSR fundamentals &amp; rendering strategies <span class="c">8</span></a>
+    <a href="#s2">2 · Next.js App Router architecture <span class="c">8</span></a>
+    <a href="#s3">3 · Next.js data fetching &amp; caching <span class="c">7</span></a>
+    <a href="#s4">4 · Remix architecture &amp; data patterns <span class="c">7</span></a>
+    <a href="#s5">5 · Hydration deep dive <span class="c">6</span></a>
+    <a class="p" href="#s6">The BFF pattern</a>
+    <a href="#s6">6 · BFF pattern &amp; design <span class="c">6</span></a>
+    <a href="#s7">7 · BFF implementation in Node <span class="c">6</span></a>
+    <a class="p" href="#s8">Server-side performance</a>
+    <a href="#s8">8 · Streaming &amp; Suspense on the server <span class="c">5</span></a>
+    <a href="#s9">9 · Edge rendering &amp; deployment topology <span class="c">5</span></a>
+    <a href="#s10">10 · Performance: Core Web Vitals from the server <span class="c">5</span></a>
+    <a class="p" href="#s11">Cross-cutting concerns</a>
+    <a href="#s11">11 · Auth across the SSR/BFF boundary <span class="c">5</span></a>
+    <a class="p" href="#s12">Senior &amp; behavioral</a>
+    <a href="#s12">12 · Senior behavior &amp; leadership <span class="c">6</span></a>
+  </div>
+  <div id="progress">
+    <div class="plabel"><span>Progress</span><span id="pcount">0 / 0</span></div>
+    <div class="pbar"><div class="pfill" id="pfill"></div></div>
+    <button class="preset" id="presetReset">Reset progress</button>
+  </div>
+</nav>
+
+<main>
+<header class="top">
+  <p class="kicker">Question bank · English · v01 &mdash; 74 questions, 12 blocks</p>
+  <h1>Interview Questions for a Senior SSR &amp; BFF Engineer</h1>
+  <p class="lede">The questions that come up most often in senior interviews touching server-side rendering and Backend-For-Frontend architecture, grouped by block, each with a plain-English explanation and a ready-to-say answer. Every question is tagged with how often it actually shows up. This bank deliberately covers both sides of the SSR/BFF boundary &mdash; the frontend-facing rendering mechanics (Next.js App Router, Remix, hydration, streaming, Core Web Vitals) and the backend-facing implementation (BFF pattern design, auth passthrough, aggregation, resilience) &mdash; because in practice, senior engineers working in this space are expected to reason fluently across both.</p>
+  <div class="top-actions">
+    <button id="btnPrint">Print / Save as PDF</button>
+    <button id="btnExpand">Expand all answers</button>
+  </div>
+</header>
+
+<h2 id="uso">Before you start</h2>
+<h3>How to use this bank</h3>
+<p>Filter by frequency with the buttons on the left: the <b>near-certain</b> ones are the core of any senior SSR/BFF loop and cover most of what you'll actually be asked. If you have one evening, that's where the return is; with two, add the <b>very common</b> ones. The first five blocks cover rendering fundamentals and framework-specific architecture &mdash; SSR/SSG/ISR distinctions, Next.js's App Router and its Server/Client Component boundary, Remix's loader/action model, and hydration mechanics, since a hydration mismatch is genuinely the most common real-world SSR bug and interviewers know it. Blocks 6 and 7 shift to the BFF pattern specifically, first the design-level thinking (when it's warranted, who should own it) and then actual implementation concerns in Node (auth passthrough, parallel aggregation with partial failure, timeout budgeting). Blocks 8 through 10 cover server-side performance in real depth &mdash; streaming SSR mechanics, edge deployment trade-offs, and how server/rendering decisions actually move Core Web Vitals. Block 11 covers the auth story across the SSR/BFF boundary specifically, since it has a genuinely different shape than SPA auth. The closing block moves into behavioral and leadership scenarios specific to this space, since SSR/BFF architecture decisions sit at an unusually high-stakes organizational seam between frontend and backend teams.</p>
+
+<div class="tblwrap">
+<table>
+  <thead><tr><th>Level</th><th>What it means</th><th>How to treat it</th></tr></thead>
+  <tbody>
+    <tr><td><span class="pop p4"><span class="d">●●●●</span>Near-certain</span></td><td>Shows up in almost every senior SSR/BFF process</td><td>Automatic answer, no hesitation. Stumbling here costs you the offer.</td></tr>
+    <tr><td><span class="pop p3"><span class="d">●●●○</span>Very common</span></td><td>Frequent, especially in the deep-dive technical round</td><td>You need to explain it and back it with your own example.</td></tr>
+    <tr><td><span class="pop p2"><span class="d">●●○○</span>Common</span></td><td>Comes up often, depending on the interviewer</td><td>Enough to recognize it and not freeze.</td></tr>
+    <tr><td><span class="pop p1"><span class="d">●○○○</span>Occasional</span></td><td>Specific to the company, domain, or interviewer</td><td>Bonus. Answering it well sets you apart.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="key">
+  <span class="lbl">Three rules for using this well</span>
+  <p><strong>Cover the answer first.</strong> Read the question, answer it out loud, and only <em>then</em> compare. Reading answers back to back creates the illusion of knowing; recalling from memory is what actually sticks.</p>
+  <p><strong>The "say it like this" line isn't filler, it's a script.</strong> It's written the way you'd actually say it live: the answer first, the nuance after. Rehearse it out loud until it comes out without reading.</p>
+  <p><strong>Anchor every answer to something real.</strong> The gap between mid-level and senior isn't the definition, it's "I hit this in production and here's how I fixed it." Add your own example to the twenty most frequent questions for your stack.</p>
+  <p><strong>Follow the link when something feels thin.</strong> Many answers end with a <em>Doc</em> line pointing to the official reference &mdash; usually React's, Next.js's, or Remix's own docs. What's here is enough to answer the question; the link is for when the interviewer keeps digging.</p>
+</div>
+
+<div class="note">
+  <p><strong>On frequency:</strong> this is an estimate based on the pattern of senior SSR/BFF interviews across product companies and remote roles, not a measurement. Use it to prioritize your review, not as a guarantee that something won't come up.</p>
+</div>
+
+<div class="note">
+  <p><strong>Companion banks in this series:</strong> this bank assumes familiarity with React and general Node.js backend concepts. The <strong>React Interview Questions</strong> bank covers component-level React depth this bank doesn't repeat, and the <strong>Senior Node.js Backend Engineer</strong> bank covers general backend concerns (auth mechanics, caching, API design, distributed systems) referenced here but not re-explained from scratch.</p>
+</div>
+
+<hr>
+<h2 id="s1">Block 1</h2>
+<h3>SSR fundamentals &amp; rendering strategies</h3>
+<p class="sec-intro">Every SSR interview starts here, because the rest of the bank assumes you can precisely distinguish SSR from SSG from ISR — interviewers use this block to filter out people who use the terms interchangeably from people who actually understand the trade-offs each one makes.</p>
+
+<article class="q" data-pop="4" data-tags="rendering-strategies">
+  <div class="qh"><span class="num">001</span><span class="pop p4"><span class="d">●●●●</span>Near-certain</span><span class="tag">SSR vs SSG vs ISR</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Precisely distinguish SSR, SSG, and ISR — when does the HTML actually get generated in each case?</p>
+  <div class="a">
+    <p><b>SSG</b> (Static Site Generation) — HTML is generated once, at <b>build time</b>, and served as a static file for every subsequent request until the next build; fastest possible response since nothing runs per-request, but the content is only as fresh as the last build. <b>SSR</b> (Server-Side Rendering) — HTML is generated <b>per request</b>, on the server, using data that's current at the moment of that specific request; always fresh, but pays rendering cost on every single request. <b>ISR</b> (Incremental Static Regeneration) — a hybrid: pages are served statically like SSG, but can be <b>regenerated in the background</b> after a configured time window or on-demand trigger, so subsequent requests get updated content without needing a full site rebuild or paying per-request SSR cost for every visitor.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"SSG bakes the HTML once at build time — fastest, but stale until the next deploy. SSR generates it fresh on every single request — always current, but you're paying render cost per visitor. ISR splits the difference: served statically like SSG, but with a background regeneration trigger so content can go stale for a bounded window and then silently refresh without a full rebuild. The choice really comes down to how often the underlying data changes relative to how much render cost you can afford to pay per request."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://nextjs.org/docs/app/building-your-application/rendering/server-components">Server Components — Next.js docs</a></p>
+</article>
+
+<article class="q" data-pop="4" data-tags="rendering-strategies">
+  <div class="qh"><span class="num">002</span><span class="pop p4"><span class="d">●●●●</span>Near-certain</span><span class="tag">Why SSR at all</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">A pure client-side rendered SPA can fetch its own data. What does SSR actually buy you that CSR doesn't?</p>
+  <div class="a">
+    <p>Two concrete wins, not vague "SEO" hand-waving: <b>time-to-first-contentful-paint</b> — a CSR app ships a nearly empty HTML shell, and the user stares at a blank page (or spinner) until JS downloads, parses, executes, and fetches data client-side; SSR ships <b>already-rendered content</b> in the initial HTML response, so the browser can paint immediately while JS hydrates in the background. And <b>crawlability</b> — search engine crawlers and social media link-preview bots historically don't reliably execute JavaScript, so a CSR app's initial HTML (empty div) is what gets indexed/previewed unless the crawler does full JS execution, which isn't universally guaranteed even today. SSR guarantees meaningful content is present in the raw HTML regardless of crawler JS support.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"It's not really about SEO in the abstract — it's two concrete things. First paint is faster because the browser gets real content in the initial HTML instead of an empty shell waiting on a JS round trip. And crawlability is guaranteed rather than dependent on whether a given bot executes JavaScript, which isn't something you want to bet a marketing page's search ranking or link-preview rendering on. For an internal admin tool neither of those matters much, which is exactly why I wouldn't reach for SSR there — the trade-off has to earn itself against the actual use case."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://web.dev/articles/rendering-on-the-web">Rendering on the web — web.dev</a></p>
+</article>
+
+<article class="q" data-pop="4" data-tags="streaming-ssr">
+  <div class="qh"><span class="num">003</span><span class="pop p4"><span class="d">●●●●</span>Near-certain</span><span class="tag">Streaming SSR</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">How does streaming SSR differ from traditional SSR, and what problem does it solve?</p>
+  <div class="a">
+    <p>Traditional SSR is <b>blocking</b> at the server level — the entire page's data must be fetched and the entire HTML tree rendered before <em>any</em> of it is sent to the browser, so one slow data dependency (a slow API call for a single widget) delays the whole page's first byte. <b>Streaming SSR</b> sends HTML in <b>chunks</b> as they become ready — the shell and fast-resolving sections stream immediately, while slower sections are sent later as their data resolves, typically using React's Suspense boundaries to mark which parts can stream independently. The browser starts rendering the fast parts immediately instead of waiting on the slowest dependency to gate the entire response.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"Traditional SSR is only as fast as its slowest data dependency, because the whole HTML tree has to be complete before the first byte goes out. Streaming SSR breaks that — fast sections stream immediately, slow ones stream in later as their data resolves, using Suspense boundaries to mark the split points. It directly attacks the 'one slow widget blocks the whole page' problem, which used to force a choice between blocking the whole page or fetching that widget's data client-side and losing the SSR benefit for it entirely."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://react.dev/reference/react-dom/server/renderToPipeableStream">renderToPipeableStream — React docs</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="hydration">
+  <div class="qh"><span class="num">004</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">Universal rendering</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">What does "universal" or "isomorphic" rendering mean, and why is it harder than it sounds to actually achieve?</p>
+  <div class="a">
+    <p>It means the <b>same component code</b> runs on both server and client — the server renders it once for the initial HTML, then the client re-runs the same code to hydrate and take over interactivity. The difficulty: any code that assumes a <b>browser-only API</b> (<code>window</code>, <code>document</code>, <code>localStorage</code>) will crash on the server, since none of those exist in a Node runtime — so "universal" code has to be written defensively, checking for environment or deferring browser-specific logic to a lifecycle hook that only runs client-side. Framework-provided abstractions (Next.js's <code>next/dynamic</code> with SSR disabled, React's <code>useEffect</code>) exist specifically to manage this boundary.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"The promise is write-once, run-both-places, but the reality is any code touching a browser-only global — window, document, localStorage — will throw on the server since that environment just doesn't exist there. Writing genuinely universal code means being deliberate about what runs where, usually pushing browser-only logic into an effect that only fires client-side, or explicitly opting a component out of SSR when it fundamentally can't run server-side. It's a real discipline, not just a framework feature you get for free."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading#with-no-ssr">Lazy loading with no SSR — Next.js docs</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="rendering-strategies">
+  <div class="qh"><span class="num">005</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">Choosing per-route</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Would you use the same rendering strategy for every route in a large app, or mix strategies? Give a concrete example.</p>
+  <div class="a">
+    <p>Mixing is the norm for any non-trivial app — different routes have genuinely different freshness and traffic characteristics. A marketing homepage that changes rarely: <b>SSG</b>, cheapest possible serving. A product listing page where inventory/price changes but not every second: <b>ISR</b> with a revalidation window matched to how often that data actually changes. A user's personalized dashboard: <b>SSR</b>, since the content is inherently per-user and can't be cached statically at all. A checkout flow with heavy client interactivity and no SEO need: often <b>CSR</b>, since neither SSR's benefits apply meaningfully to a page crawlers don't need to index and users only reach after already being engaged.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"I pick per-route based on two questions: does this content need to be fresh per-request, and does it need to be crawlable or fast-first-paint at all. Marketing pages are SSG, a product catalog with changing inventory is ISR tuned to how often that data actually moves, a personalized dashboard is SSR since it can't be cached statically, and something like a checkout flow with no SEO need and heavy interactivity is often just CSR. Using one strategy uniformly across a whole app almost always means over-paying for freshness somewhere or under-paying for it somewhere else."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://nextjs.org/docs/app/building-your-application/data-fetching/incremental-static-regeneration">Incremental Static Regeneration — Next.js docs</a></p>
+</article>
+
+<article class="q" data-pop="2" data-tags="rendering-strategies">
+  <div class="qh"><span class="num">006</span><span class="pop p2"><span class="d">●●○○</span>Common</span><span class="tag">TTFB vs TTI</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Why can a page have a fast Time to First Byte but still feel slow to the user?</p>
+  <div class="a">
+    <p><b>TTFB</b> only measures how fast the server responds with the <em>first</em> byte of HTML — it says nothing about when the page is actually usable. A page can have excellent TTFB (fast server, cached, streamed early) but still have a slow <b>Time to Interactive</b> if the JavaScript bundle is large, hydration is expensive, or a heavy client-side computation blocks the main thread after load. These are genuinely separate metrics measuring different parts of the pipeline, and optimizing one doesn't automatically fix the other — a common trap is treating a fast TTFB as proof the page is fast overall.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"TTFB only tells you the server responded fast — it says nothing about hydration cost or bundle size, which is where a lot of perceived slowness actually lives. I've seen a page with excellent TTFB from aggressive caching still feel sluggish because hydration was blocking the main thread for a second or two after the HTML arrived. I treat TTFB, hydration time, and Time to Interactive as three separate numbers I need to actually look at, not one proxy for 'is this page fast.'"</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://web.dev/articles/tti">Time to Interactive — web.dev</a></p>
+</article>
+
+<article class="q" data-pop="2" data-tags="on-demand-isr">
+  <div class="qh"><span class="num">007</span><span class="pop p2"><span class="d">●●○○</span>Common</span><span class="tag">On-demand revalidation</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">How does on-demand ISR revalidation differ from time-based revalidation, and when would you need it?</p>
+  <div class="a">
+    <p><b>Time-based</b> revalidation (<code>revalidate: 60</code>) regenerates a page after a fixed window has elapsed since it was last built, regardless of whether the underlying data actually changed — simple, but content can be stale for up to that whole window even right after a real change. <b>On-demand</b> revalidation lets your backend explicitly trigger regeneration of a specific page the <b>instant</b> the underlying data actually changes — e.g. a CMS webhook firing when an editor publishes a change, calling an API route that invalidates exactly that page's cache. This gives you SSG's serving cost with near-real-time freshness, at the cost of needing to wire up that trigger explicitly rather than just setting a timer.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"Time-based revalidation is a blunt timer — stale for up to that window even if the underlying content changed the instant after the last regeneration. On-demand lets the actual data change trigger the regeneration directly, usually via a CMS webhook hitting a revalidation API route the moment an editor publishes. I'd reach for on-demand specifically when 'stale for even a minute' is a real problem — a news site or anything where editors expect their publish action to be immediately visible — and time-based when a bounded staleness window is genuinely fine."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://nextjs.org/docs/app/building-your-application/data-fetching/incremental-static-regeneration#on-demand-revalidation">On-demand revalidation — Next.js docs</a></p>
+</article>
+
+<article class="q" data-pop="1" data-tags="rendering-strategies">
+  <div class="qh"><span class="num">008</span><span class="pop p1"><span class="d">●○○○</span>Occasional</span><span class="tag">Dynamic rendering fallback</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">What happens when an ISR page is requested for a path that hasn't been generated yet — is there always a stale version to serve?</p>
+  <div class="a">
+    <p>Depends on the configured <b>fallback</b> behavior. <code>fallback: false</code> — any path not generated at build time 404s immediately. <code>fallback: true</code> — the framework serves a loading state on first request while generating the page in the background, then serves the real content once ready (and caches it for subsequent requests). <code>fallback: 'blocking'</code> — the first request for an ungenerated path waits (blocks) for the render to complete server-side before responding, so the very first visitor gets a slightly slower response but never sees a loading-state flash, and every request after that is served from cache.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"It depends entirely on the fallback mode. False means anything not pre-generated 404s, which fits a bounded, known set of pages. True shows a loading state on the very first request while generating in the background — good for a huge catalog where pre-generating everything upfront isn't practical. Blocking makes the first request wait for the real render instead of showing a loading flash, trading a slower first hit for a cleaner experience. I pick based on how many total paths exist and whether a loading-state flash on a first visit is acceptable for that specific page type."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://nextjs.org/docs/pages/api-reference/functions/get-static-paths#fallback-blocking">getStaticPaths fallback — Next.js docs</a></p>
+</article>
+<h2 id="s2">Block 2</h2>
+<h3>Next.js App Router architecture</h3>
+<p class="sec-intro">The Server Component / Client Component boundary is where App Router interviews live or die — it's a genuinely new mental model, not just new file naming, and interviewers use it to check whether a candidate actually understands the architecture or just knows the directives.</p>
+
+<article class="q" data-pop="4" data-tags="server-components">
+  <div class="qh"><span class="num">009</span><span class="pop p4"><span class="d">●●●●</span>Near-certain</span><span class="tag">Server vs Client Components</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">What's the fundamental difference between a Server Component and a Client Component — not the syntax, the actual execution model?</p>
+  <div class="a">
+    <p>A <b>Server Component</b> renders <b>exclusively on the server</b> (or at build time) — its code, including any imports it pulls in, <b>never ships to the browser</b> at all. It can directly access server-only resources (a database, the filesystem, a secret API key) with no need for an API layer in between, since it's not running client-side, ever. A <b>Client Component</b> (marked with <code>'use client'</code>) renders on the server for the initial HTML like everything else, but its <b>code is also sent to the browser</b> and it hydrates and re-renders client-side, which is what lets it use state, effects, and browser APIs — capabilities a Server Component structurally cannot have, since it never runs in a browser context at all.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"The key thing isn't 'runs first on server vs runs on client' — it's that a Server Component's code never ships to the browser at all, full stop, which is why it can safely import server-only secrets or hit a database directly with zero API layer in between. A Client Component's code does ship to the browser and hydrates there, which is the only reason it's allowed to have state or effects — those require an actual runtime in the browser that a Server Component structurally never has. Getting this distinction right is really the whole App Router mental model."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://react.dev/reference/rsc/server-components">Server Components — React docs</a></p>
+</article>
+
+<article class="q" data-pop="4" data-tags="server-components">
+  <div class="qh"><span class="num">010</span><span class="pop p4"><span class="d">●●●●</span>Near-certain</span><span class="tag">Composing across the boundary</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Can a Server Component import and render a Client Component? Can a Client Component import a Server Component? Explain the asymmetry.</p>
+  <div class="a">
+    <p>A Server Component <b>can</b> import and render a Client Component directly — this is the normal, expected composition, since the Server Component's output just needs to include a marker telling the client runtime "hydrate a Client Component here." A Client Component <b>cannot</b> directly import a Server Component, because once you're inside client-rendered code, there's no mechanism to reach back into server-only execution — imports are resolved at build/bundle time, and a Server Component's code was never meant to ship to the client bundle at all. The workaround, when a Client Component needs to include Server Component content, is passing the already-rendered Server Component as <b>children</b> (or another prop) from a parent Server Component — the Client Component treats it as an opaque, already-rendered slot, not something it imports and renders itself.</p>
+  </div>
+  <pre><code><span class="c">// ServerParent.tsx (Server Component)</span>
+<span class="k">import</span> ClientWrapper <span class="k">from</span> <span class="s">'./ClientWrapper'</span>;
+<span class="k">import</span> ServerContent <span class="k">from</span> <span class="s">'./ServerContent'</span>;
+
+<span class="k">export default function</span> Page() {
+  <span class="k">return</span> (
+    &lt;ClientWrapper&gt;
+      &lt;ServerContent /&gt; <span class="c">{/* passed as children, not imported by ClientWrapper */}</span>
+    &lt;/ClientWrapper&gt;
+  );
+}</code></pre>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"Server-to-client composition is the normal case — a Server Component renders a Client Component and the framework handles hydrating it. It doesn't work the other way because once you're client-side, there's no path back to server-only execution — imports are resolved into the client bundle at build time, and Server Component code was never meant to be in that bundle at all. The pattern for a Client Component that needs Server Component content is the parent Server Component passing the already-rendered Server Component in as children, so the Client Component just slots it in as an opaque prop rather than importing and rendering it itself."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://nextjs.org/docs/app/building-your-application/rendering/composition-patterns">Composition patterns — Next.js docs</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="app-router">
+  <div class="qh"><span class="num">011</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">File conventions</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">What do <code>layout.tsx</code>, <code>template.tsx</code>, <code>loading.tsx</code>, and <code>error.tsx</code> each control in the App Router, and how do they compose?</p>
+  <div class="a">
+    <p><code>layout.tsx</code> — wraps a route segment and <b>persists across navigations</b> within it; its state isn't reset when navigating between child routes, which is what makes it right for things like a persistent sidebar or nav bar. <code>template.tsx</code> — same wrapping behavior, but a <b>new instance is created on every navigation</b>, resetting state — the right choice when you specifically want a re-mount on every page transition (a page-enter animation). <code>loading.tsx</code> — automatically wraps the segment in a Suspense boundary, shown while the segment's data is being fetched. <code>error.tsx</code> — automatically wraps the segment in an error boundary, catching errors thrown during rendering of that segment or its children.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"Layout persists across navigation within its segment, so it's what I use for anything that shouldn't remount — a sidebar, a persistent nav. Template is the same shape but deliberately remounts on every navigation, which is the right call when you want fresh state or a re-trigger animation on every page transition. Loading and error are automatic Suspense and error boundaries scoped to that route segment — the framework wires them up for you just by the file existing, which is a big part of what makes App Router's loading and error states feel so declarative compared to hand-wiring boundaries manually."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://nextjs.org/docs/app/building-your-application/routing">Routing fundamentals — Next.js docs</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="server-components">
+  <div class="qh"><span class="num">012</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">Serialization boundary</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">What can and can't cross the Server-to-Client Component boundary as props, and why?</p>
+  <div class="a">
+    <p>Props passed from a Server Component to a Client Component must be <b>serializable</b> — the data actually has to travel from server to browser as part of the RSC payload, similar to (but not identical to) JSON serialization. Plain objects, arrays, strings, numbers, and (with React's special support) even <b>promises and functions defined server-side for Server Actions</b> can cross. What <b>can't</b> cross: class instances, functions that aren't specifically Server Actions, <code>Date</code> objects (need explicit serialization), and anything holding a reference to server-only resources like an open DB connection — none of those have meaning once they'd need to exist in the browser's JS runtime.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"The boundary is a genuine serialization boundary, not just a conceptual one — whatever crosses has to actually be representable in the RSC payload sent to the browser. Plain data crosses fine. A live database connection or a class instance with methods doesn't, because neither has any meaning once it needs to exist in browser JS. The one deliberate exception is Server Actions — functions specifically marked to be callable from the client that actually re-invoke server code via a special mechanism, not a literal function reference being serialized."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://react.dev/reference/rsc/use-client#serializable-types">Serializable types — React docs</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="server-actions">
+  <div class="qh"><span class="num">013</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">Server Actions</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">What are Server Actions, and how do they let a Client Component trigger server-side logic without you manually building an API route?</p>
+  <div class="a">
+    <p>A Server Action is a function marked with <code>'use server'</code> that, despite being <b>referenced from client code</b>, actually executes <b>on the server</b> — the framework generates an implicit API endpoint under the hood, and calling the function from the client is transparently turned into a network request to that endpoint. This eliminates a whole class of boilerplate: no manually defining a route handler, no manually writing a fetch call and handling its response — form submission and mutation logic can look like a direct function call while still executing entirely server-side, with real access to server-only resources.</p>
+  </div>
+  <pre><code><span class="c">// actions.ts</span>
+<span class="s">'use server'</span>;
+<span class="k">export async function</span> createPost(formData: FormData) {
+  <span class="k">await</span> db.post.create({ data: { title: formData.get(<span class="s">'title'</span>) } });
+}
+
+<span class="c">// Form.tsx (Client Component)</span>
+<span class="k">import</span> { createPost } <span class="k">from</span> <span class="s">'./actions'</span>;
+<span class="k">export default function</span> Form() {
+  <span class="k">return</span> &lt;form action={createPost}&gt;...&lt;/form&gt;; <span class="c">// framework wires this to a real server call</span>
+}</code></pre>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"It looks like calling a regular function from client code, but the framework generates an actual server endpoint under the hood and transparently turns that call into a network request — so the code you write reads like direct function invocation while genuinely running server-side with full access to server-only resources. The real benefit is eliminating the boilerplate of manually building a route handler and a corresponding client-side fetch call for every mutation — form submissions especially get dramatically simpler."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations">Server Actions and Mutations — Next.js docs</a></p>
+</article>
+
+<article class="q" data-pop="2" data-tags="app-router">
+  <div class="qh"><span class="num">014</span><span class="pop p2"><span class="d">●●○○</span>Common</span><span class="tag">Parallel &amp; intercepting routes</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">What real UX problem do parallel routes and intercepting routes solve in the App Router?</p>
+  <div class="a">
+    <p><b>Parallel routes</b> (<code>@slot</code> folders) let you render <b>multiple independent pages</b> in the same layout simultaneously — a dashboard with an analytics panel and a notifications panel that each have their own loading/error states and can be navigated somewhat independently, without one being nested inside the other's route tree. <b>Intercepting routes</b> let a navigation <b>"intercept"</b> and render a route as an overlay (a modal) within the current context instead of doing a full page transition — the classic case being a photo grid where clicking a photo opens it as a modal over the grid, but if the user directly navigates to (or refreshes) that photo's URL, they get the full standalone page instead of a broken modal-only view.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"Parallel routes solve rendering genuinely independent sections of a layout simultaneously, each with its own loading and error boundary, without forcing an artificial parent-child route relationship between them. Intercepting routes solve the modal-with-a-real-URL problem — clicking a photo shows it as an overlay without a full navigation, but a direct link or refresh to that same URL correctly renders the full standalone page instead of a broken modal shell. That combination is what makes something like Instagram's photo-modal-with-shareable-URL pattern actually work cleanly in Next.js."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://nextjs.org/docs/app/building-your-application/routing/intercepting-routes">Intercepting Routes — Next.js docs</a></p>
+</article>
+
+<article class="q" data-pop="2" data-tags="server-components">
+  <div class="qh"><span class="num">015</span><span class="pop p2"><span class="d">●●○○</span>Common</span><span class="tag">Third-party libraries</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">You need to use a third-party UI library that relies on React hooks and browser APIs internally, but it doesn't ship its own <code>'use client'</code> directive. How do you use it in an App Router project?</p>
+  <div class="a">
+    <p>Since the library's own code doesn't mark itself as a Client Component, importing it directly into a Server Component will fail (or behave incorrectly) since Server Components can't use hooks or browser APIs. The fix: create a thin <b>wrapper Client Component</b> in your own codebase, marked with <code>'use client'</code>, that imports and re-exports the third-party component — now the boundary is established by your own wrapper, and any Server Component can import <em>your wrapper</em> (which is a Client Component) rather than importing the library directly.</p>
+  </div>
+  <pre><code><span class="c">// LibraryWrapper.tsx</span>
+<span class="s">'use client'</span>;
+<span class="k">export</span> { SomeThirdPartyComponent } <span class="k">from</span> <span class="s">'some-library'</span>;
+
+<span class="c">// ServerPage.tsx — imports the wrapper, not the library directly</span>
+<span class="k">import</span> { SomeThirdPartyComponent } <span class="k">from</span> <span class="s">'./LibraryWrapper'</span>;</code></pre>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"I wrap it — a small file in my own codebase marked 'use client' that just re-exports the library's component. That establishes the client boundary on my terms, and any Server Component importing my wrapper gets a properly-marked Client Component instead of trying to use the library's un-marked code directly, which would fail since Server Components can't use hooks. It's a small pattern but it comes up constantly with the App Router ecosystem still catching up on marking their own components."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://nextjs.org/docs/app/building-your-application/rendering/composition-patterns#third-party-packages">Third-party packages — Next.js docs</a></p>
+</article>
+
+<article class="q" data-pop="1" data-tags="app-router">
+  <div class="qh"><span class="num">016</span><span class="pop p1"><span class="d">●○○○</span>Occasional</span><span class="tag">Route groups</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">What are route groups (parenthesized folder names) for, given they don't affect the URL?</p>
+  <div class="a">
+    <p>A folder named <code>(marketing)</code> is <b>excluded from the URL path</b> but still participates in the file-system routing structure — its purpose is purely <b>organizational</b>: grouping related routes together for a shared layout, or just for codebase clarity, without that grouping leaking into the actual URL structure users and search engines see. Common use: a <code>(marketing)</code> group with its own layout for public pages, and a separate <code>(app)</code> group with a different layout for authenticated app pages, both living under the same root without either group name appearing in any URL.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"They're purely organizational — the parentheses tell the router 'don't include this folder name in the URL,' so you can group routes that share a layout or just belong together conceptually, without that internal structure leaking into the actual paths. A common pattern is grouping all the public marketing pages under one layout and all the authenticated app pages under a different layout, with neither group name showing up in any real URL."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://nextjs.org/docs/app/building-your-application/routing/route-groups">Route Groups — Next.js docs</a></p>
+</article>
+<h2 id="s3">Block 3</h2>
+<h3>Next.js data fetching &amp; caching</h3>
+<p class="sec-intro">Next.js's caching model is famously easy to get wrong in production — several layers stack on top of each other, and interviewers use this block to check whether a candidate can reason about which layer is actually responsible for a given piece of stale data.</p>
+
+<article class="q" data-pop="4" data-tags="caching">
+  <div class="qh"><span class="num">017</span><span class="pop p4"><span class="d">●●●●</span>Near-certain</span><span class="tag">The four caching layers</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Next.js has multiple distinct caching layers that all stack together. Name them and what each one caches.</p>
+  <div class="a">
+    <p><b>Request memoization</b> — within a <b>single render pass</b>, identical <code>fetch</code> calls (same URL and options) are automatically deduped, so multiple components requesting the same data don't trigger duplicate network calls; this cache is cleared after the render completes. <b>Data Cache</b> — persists <b>across requests and deployments</b>, server-side, storing the actual fetched data; this is what <code>revalidate</code> options and <code>cache: 'force-cache'</code>/<code>'no-store'</code> control. <b>Full Route Cache</b> — caches the <b>rendered HTML and RSC payload</b> for a route at build time (for static routes), separate from the underlying data cache. <b>Router Cache</b> (client-side) — an in-browser cache of visited route segments, enabling instant back/forward navigation without re-fetching from the server.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"Four layers, and most confusion I've debugged comes from not knowing which one is actually stale. Request memoization is per-render-pass deduplication, cleared immediately after. The Data Cache is the persistent server-side cache of actual fetched data, controlled by revalidate and cache options. The Full Route Cache is the rendered output itself, separate from the data underneath it. And the Router Cache is client-side, for instant back-and-forward navigation. When something looks stale in production, I check these in that order — it's almost never 'caching is broken' generically, it's one specific layer with a specific, identifiable cause."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://nextjs.org/docs/app/building-your-application/caching">Caching in Next.js — Next.js docs</a></p>
+</article>
+
+<article class="q" data-pop="4" data-tags="caching">
+  <div class="qh"><span class="num">018</span><span class="pop p4"><span class="d">●●●●</span>Near-certain</span><span class="tag">fetch caching defaults</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">By default, does Next.js's extended <code>fetch</code> cache the response? What controls that behavior, and where's the trap?</p>
+  <div class="a">
+    <p>Next.js's <code>fetch</code> is aware of the framework's Data Cache and, historically, defaulted to <b>caching aggressively</b> (<code>force-cache</code>-like behavior) unless told otherwise — a real trap for anyone expecting standard browser <code>fetch</code> semantics, since a request that should be fresh per-request (like anything using cookies/headers for personalization) could silently serve <b>cached, stale, or even cross-user</b> data if the caching behavior wasn't explicitly overridden. Explicit control: <code>cache: 'force-cache'</code> (cache indefinitely, or per a set <code>revalidate</code>), <code>cache: 'no-store'</code> (never cache, always fetch fresh), or <code>next: { revalidate: N }</code> for a time-based cache window. The trap has historically caused real production incidents — personalized data leaking across users because a fetch was cached without anyone realizing caching was even happening by default.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"The historical default caching behavior is the single most common source of real 'why is this stale' or worse, 'why did user A see user B's data' incidents I've seen with Next.js in production — a fetch call that should've been per-request ended up cached because nobody explicitly set cache: 'no-store'. I treat every fetch call as needing an explicit cache decision rather than trusting the framework default, especially for anything touching per-user or per-request data, since the cost of getting this wrong is a genuine data-leak-class bug, not just a UX staleness annoyance."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://nextjs.org/docs/app/api-reference/functions/fetch">fetch — Next.js API reference</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="route-handlers">
+  <div class="qh"><span class="num">019</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">Route Handlers vs Server Actions</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">When would you build a Route Handler (an <code>app/api/</code> endpoint) instead of a Server Action for a given piece of backend logic?</p>
+  <div class="a">
+    <p>Server Actions are ideal for mutations triggered from within your own app's UI — they're not really meant to be a general-purpose public API. A <b>Route Handler</b> is the right choice when: the endpoint needs to be consumed by an <b>external client</b> that isn't your Next.js frontend (a mobile app, a third-party integration, a webhook receiver); you need full control over <b>HTTP semantics</b> (specific status codes, custom headers, non-JSON response formats); or the logic genuinely represents a <b>REST-ish API surface</b> meant to be called by multiple different consumers, not a single form's mutation.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"Server Actions are great for a form or mutation that's part of my own app's UI, but they're not designed to be a general external API surface. Route Handlers are what I reach for when something needs to be called by a mobile app, a webhook, or any consumer that isn't this specific Next.js frontend, or when I genuinely need fine control over the HTTP response — specific status codes, custom headers, a non-JSON body. The distinction is really 'internal mutation triggered by my own UI' versus 'actual API surface for external consumers.'"</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://nextjs.org/docs/app/building-your-application/routing/route-handlers">Route Handlers — Next.js docs</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="revalidation">
+  <div class="qh"><span class="num">020</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">revalidatePath vs revalidateTag</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Compare <code>revalidatePath</code> and <code>revalidateTag</code> — when would each be the more precise tool?</p>
+  <div class="a">
+    <p><code>revalidatePath('/products/123')</code> invalidates the cache for a specific <b>route</b> — everything cached under that path gets refreshed on next request. <code>revalidateTag('product-123')</code> invalidates by an arbitrary <b>tag</b> you attach to <code>fetch</code> calls, which can span <b>multiple routes</b> that all depend on the same underlying data — if a product appears on its own detail page, a category listing, and a "related products" widget on other pages, tagging every fetch of that product's data with the same tag lets one <code>revalidateTag</code> call invalidate <em>all</em> of those routes at once, rather than needing to know and call <code>revalidatePath</code> for each one individually.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"revalidatePath is route-scoped — invalidate exactly this path. revalidateTag is data-scoped — invalidate every fetch anywhere in the app that was tagged with this identifier, which matters a lot once the same underlying data appears on multiple different routes. I default to tags for anything that's genuinely shared data referenced from more than one route, since revalidatePath would require me to enumerate and remember every single route that happens to reference that data, which is exactly the kind of thing that silently goes stale when a new route referencing it gets added later and nobody remembers to add the revalidatePath call for it."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://nextjs.org/docs/app/api-reference/functions/revalidateTag">revalidateTag — Next.js API reference</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="waterfalls">
+  <div class="qh"><span class="num">021</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">Data fetching waterfalls</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Server Components can fetch their own data directly, wherever they're rendered. How does this create request waterfalls, and how do you avoid it?</p>
+  <div class="a">
+    <p>If a parent Server Component fetches data and only <em>then</em> renders a child Server Component that fetches its <em>own</em> data, and that child's fetch depends on nothing from the parent, the two fetches still happen <b>sequentially</b> by default — the child doesn't start fetching until the parent component's render function is called, which only happens after the parent's own fetch resolves. This creates an unnecessary waterfall for genuinely independent data. The fix: fetch data <b>in parallel</b> by initiating unrelated fetches without awaiting them immediately — kick off all independent fetches at the top of the tree, then await them where the data is actually needed, or use <code>Promise.all</code> explicitly to run genuinely independent fetches concurrently rather than letting component tree structure impose accidental sequencing.</p>
+  </div>
+  <pre><code><span class="c">// sequential — child's fetch doesn't start until parent's resolves</span>
+<span class="k">async function</span> Parent() {
+  <span class="k">const</span> data = <span class="k">await</span> fetchParentData();
+  <span class="k">return</span> &lt;Child /&gt;; <span class="c">// Child's own fetch only starts here</span>
+}
+
+<span class="c">// parallel — both fetches start immediately, independently</span>
+<span class="k">async function</span> Parent() {
+  <span class="k">const</span> parentPromise = fetchParentData();
+  <span class="k">const</span> childDataPromise = fetchChildData(); <span class="c">// kicked off in parallel, not awaited yet</span>
+  <span class="k">const</span> data = <span class="k">await</span> parentPromise;
+  <span class="k">return</span> &lt;Child dataPromise={childDataPromise} /&gt;;
+}</code></pre>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"Because each Server Component can fetch independently, it's easy to accidentally create a waterfall just from component tree structure — a child's fetch literally can't start until the parent's render function runs, which only happens after the parent's own await resolves, even if the two fetches have nothing to do with each other. The fix is being deliberate about starting unrelated fetches without immediately awaiting them, so they run concurrently, and only awaiting each promise where its data is actually needed. This is one of the most common accidental performance regressions I've seen in real App Router codebases, precisely because the sequential version looks completely natural to write."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://nextjs.org/docs/app/building-your-application/data-fetching/patterns#parallel-and-sequential-data-fetching">Parallel and sequential data fetching — Next.js docs</a></p>
+</article>
+
+<article class="q" data-pop="2" data-tags="dynamic-rendering">
+  <div class="qh"><span class="num">022</span><span class="pop p2"><span class="d">●●○○</span>Common</span><span class="tag">Dynamic API opt-out</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Using <code>cookies()</code> or <code>headers()</code> in a Server Component forces the whole route to render dynamically at request time, even if you didn't explicitly ask for that. Why?</p>
+  <div class="a">
+    <p>Reading request-specific data like cookies or headers means the component's output <b>could genuinely differ per request</b> — the framework can't safely treat that route as static/cacheable anymore, since doing so would risk serving one request's personalized content to a different user. Using any of these <b>"Dynamic APIs"</b> automatically opts the whole route out of static rendering into request-time (dynamic) rendering — this is a correctness safeguard, not an oversight, but it's a common source of surprise when someone reads a cookie somewhere deep in the component tree and unexpectedly loses static generation for the entire route.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"It's a correctness guarantee, not a quirk — if a component reads a cookie or header, its output could genuinely be different for every request, so the framework can't safely cache or statically generate that route without risking cross-user data leakage. The gotcha is that this opt-out is contagious to the whole route from a single deeply-nested component doing it, which has surprised teams who expected a page to be static and only found out it wasn't after noticing it was rendering dynamically on every single request. I check for Dynamic API usage explicitly when a route isn't caching the way I expect."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://nextjs.org/docs/app/building-your-application/rendering/server-components#dynamic-rendering">Dynamic Rendering — Next.js docs</a></p>
+</article>
+
+<article class="q" data-pop="1" data-tags="streaming">
+  <div class="qh"><span class="num">023</span><span class="pop p1"><span class="d">●○○○</span>Occasional</span><span class="tag">unstable_cache</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">You need to cache the result of a non-<code>fetch</code> data source — a direct database query. How do you get Data Cache-style caching for it?</p>
+  <div class="a">
+    <p>Next.js's automatic Data Cache integration is specifically wired into its extended <code>fetch</code> — a direct database call (via an ORM, not HTTP) doesn't automatically participate in that caching layer. <code>unstable_cache</code> (or the newer stabilized equivalents as the API evolves) wraps an arbitrary async function, giving it Data-Cache-style behavior — configurable revalidation time and tag-based invalidation — even though the underlying operation isn't an HTTP fetch at all.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"The automatic caching is tied specifically to the extended fetch — a direct ORM call to the database doesn't get that for free. unstable_cache wraps any async function and gives it the same revalidate-and-tag-based caching behavior manually, so a database query can participate in the same caching model as a fetch call even though it's not HTTP under the hood. I use it whenever a data source isn't naturally a fetch but still benefits from the same caching semantics as everything else in the app."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://nextjs.org/docs/app/api-reference/functions/unstable_cache">unstable_cache — Next.js API reference</a></p>
+</article>
+<h2 id="s4">Block 4</h2>
+<h3>Remix architecture &amp; data patterns</h3>
+<p class="sec-intro">Remix's loader/action model is philosophically different from App Router's Server Components, and interviewers who ask about both frameworks are usually checking whether you understand that difference, not just whether you know two separate syntaxes.</p>
+
+<article class="q" data-pop="4" data-tags="remix">
+  <div class="qh"><span class="num">024</span><span class="pop p4"><span class="d">●●●●</span>Near-certain</span><span class="tag">Loaders &amp; actions</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Explain Remix's loader/action model and how it maps to HTTP methods.</p>
+  <div class="a">
+    <p>A route's <code>loader</code> function runs on the server and provides data for <b>GET</b> requests to that route — it's called before rendering, and its return value is available to the component via a hook. A route's <code>action</code> function runs on the server in response to <b>non-GET</b> requests (POST, PUT, DELETE, PATCH) — typically triggered by a form submission — handling mutations and returning data (often a redirect or validation errors) back to the route. The model deliberately maps onto standard HTTP semantics rather than inventing a separate mutation abstraction: a page's data loading and its mutations are two distinctly-named functions on the same route file, colocated but conceptually separate.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"Loader handles GET — it runs server-side and supplies the data the route needs before render. Action handles everything else — POST, PUT, DELETE — typically from a form submission, and it's where mutations live. What I like about the model is it maps directly onto HTTP semantics instead of inventing a new mental model for mutations — a route file has a clearly separated read path and write path, both colocated with the component that uses them, which keeps the mapping between UI and its data operations very legible."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://remix.run/docs/en/main/route/loader">loader — Remix docs</a></p>
+</article>
+
+<article class="q" data-pop="4" data-tags="remix,nested-routing">
+  <div class="qh"><span class="num">025</span><span class="pop p4"><span class="d">●●●●</span>Near-certain</span><span class="tag">Nested routes &amp; parallel loaders</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">How does Remix's nested routing let multiple loaders for different parts of a page run in parallel, and why does that matter for performance?</p>
+  <div class="a">
+    <p>Remix's routes are <b>nested</b> to mirror UI nesting — a layout route and its child route each have their own <code>loader</code>, and when a URL matches both (a parent layout and a specific child), Remix runs <b>both loaders concurrently</b>, not sequentially, since neither depends on the other by default. This directly avoids the request-waterfall problem that can happen in other frameworks when a parent's data-fetching logic is a prerequisite for even reaching the code that fetches a child's data — in Remix, the router already knows which routes match before any loader runs, so it can kick off every matched route's loader at once.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"Because Remix's router resolves the full nested route match before running anything, it knows upfront which loaders are needed for a given URL and fires all of them concurrently, rather than waiting on a parent's loader to finish before even starting a child's. That's a structural, built-in avoidance of the waterfall problem you have to be deliberate about avoiding in some other frameworks' component-driven fetching models — here it's just how routing works by default, not something you have to remember to opt into."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://remix.run/docs/en/main/discussion/data-flow">Data Flow — Remix docs</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="remix,progressive-enhancement">
+  <div class="qh"><span class="num">026</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">Progressive enhancement</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Remix is often described as embracing "progressive enhancement" for forms. What does that actually mean mechanically, and why does it matter?</p>
+  <div class="a">
+    <p>A Remix form built with the framework's <code>&lt;Form&gt;</code> component is, mechanically, a <b>real HTML form</b> — if JavaScript fails to load, is disabled, or hasn't hydrated yet, the form still works via a standard browser <b>full-page submission</b> to the route's action, since that's what a real HTML form does natively. Once JavaScript <em>is</em> available, Remix intercepts the submission client-side and handles it without a full page reload, giving an SPA-like experience — but the underlying capability doesn't <b>require</b> JS to function at all, it's enhanced by it. This matters for resilience (a JS bundle failing to load doesn't break the app entirely) and for genuinely respecting the platform rather than reimplementing form submission from scratch in JS with no native fallback.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"The form works as a real HTML form first — full page submission via native browser behavior — and JavaScript, when available, intercepts that same submission to make it feel like an SPA without a full reload. It's not two separate implementations, it's one real form that gets progressively enhanced. That means a JS bundle failing to load or being slow to hydrate doesn't leave the user with a broken button — the form still just works, which is a meaningfully different resilience story than a form that only functions once a JS event handler has attached."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://remix.run/docs/en/main/discussion/progressive-enhancement">Progressive Enhancement — Remix docs</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="remix,error-handling">
+  <div class="qh"><span class="num">027</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">Error boundaries per route</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">How does Remix handle errors thrown inside a loader, and how does that differ from a typical try/catch-in-the-component approach?</p>
+  <div class="a">
+    <p>A route can export an <code>ErrorBoundary</code>, and if that route's <code>loader</code> (or <code>action</code>, or the component itself) throws, Remix automatically renders the <b>nearest</b> <code>ErrorBoundary</code> up the route tree — scoped precisely to the failing route's position in the nested hierarchy, so a deeply nested route's data-loading failure doesn't necessarily take down the entire page, just the portion of UI that route owns, while parent layouts continue rendering normally around it. This is architecturally cleaner than scattering try/catch blocks inside components, since error handling is declared once per route and automatically scoped by the router's own nesting structure rather than manually wired per component.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"Error boundaries are scoped to the route nesting itself — if a deeply nested route's loader throws, only that route's slot in the UI shows the error boundary, while everything above it in the layout tree keeps rendering normally. That's a real structural advantage over manually wiring try/catch in components, since the scoping is automatic and matches the actual UI hierarchy rather than needing each component to independently handle its own failure case. It also means a single failing widget genuinely can't take down an entire page by default, which is a meaningfully different resilience posture than a monolithic error boundary wrapping everything."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://remix.run/docs/en/main/route/error-boundary">ErrorBoundary — Remix docs</a></p>
+</article>
+
+<article class="q" data-pop="2" data-tags="remix,optimistic-ui">
+  <div class="qh"><span class="num">028</span><span class="pop p2"><span class="d">●●○○</span>Common</span><span class="tag">Optimistic UI</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">How would you implement optimistic UI for a form submission in Remix — showing the result immediately before the server confirms it?</p>
+  <div class="a">
+    <p>Remix's <code>useFetcher</code> (or the form navigation state) exposes the <b>in-flight form data</b> being submitted, before the action has actually resolved — a component can read that pending submission's data directly and render <b>as if</b> the mutation already succeeded, then reconcile with the real server response once the action actually completes. This gives an instant-feeling UI update without needing separate client-side state management to fake the optimistic value — the "optimistic" data is quite literally the same form data that was just submitted, reused for rendering before the round trip completes.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"useFetcher exposes the in-flight submission's own form data while the action is still pending, so I can render the UI as if it already succeeded using that same data, and let it reconcile with whatever the server actually returns once the action resolves. What I like about this pattern is the optimistic value isn't separately faked client-side state — it's literally the form data that was just submitted, which keeps the optimistic and real paths from drifting apart the way hand-rolled optimistic state sometimes can."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://remix.run/docs/en/main/discussion/pending-ui">Pending UI — Remix docs</a></p>
+</article>
+
+<article class="q" data-pop="2" data-tags="remix,nextjs">
+  <div class="qh"><span class="num">029</span><span class="pop p2"><span class="d">●●○○</span>Common</span><span class="tag">Remix vs Next.js philosophy</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Beyond feature lists, what's the underlying philosophical difference between Remix and Next.js's App Router?</p>
+  <div class="a">
+    <p>App Router's Server Components model treats the <b>component tree itself</b> as the unit of server/client composition — any component, anywhere in the tree, can be a Server or Client Component, and data fetching is distributed throughout that tree. Remix's model is more <b>route-centric</b> and deliberately closer to traditional web fundamentals — loaders and actions are tied to routes (which map to URLs), forms are real HTML forms enhanced progressively, and there's a stronger emphasis on the framework staying close to standard web platform behavior rather than introducing a new rendering primitive like Server Components. Neither is strictly "better" — App Router's model gives more fine-grained control over what's server-only at the component level; Remix's model is more predictable and closer to how the web already worked before, at the cost of that finer-grained per-component server/client split.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"App Router's philosophy is component-centric — Server Components as a new composition primitive that can live anywhere in the tree. Remix stays route-centric and closer to web fundamentals — loaders and actions tied to URLs, real HTML forms progressively enhanced, less new conceptual surface area. Neither is objectively better; App Router gives finer per-component control over the server/client split, Remix trades some of that granularity for a model that's more predictable and closer to how the platform already worked. I'd pick based on whether the team wants that finer-grained control or values staying closer to web standards with less new abstraction to learn."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://remix.run/docs/en/main/discussion/philosophy">Remix Philosophy — Remix docs</a></p>
+</article>
+
+<article class="q" data-pop="1" data-tags="remix">
+  <div class="qh"><span class="num">030</span><span class="pop p1"><span class="d">●○○○</span>Occasional</span><span class="tag">Resource routes</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">What's a "resource route" in Remix, and when would you use one instead of a regular route?</p>
+  <div class="a">
+    <p>A resource route is a route that has a <code>loader</code>/<code>action</code> but <b>no default export component</b> — it's meant to be hit directly as an endpoint (returning JSON, a file, a redirect) rather than rendering a UI. Practical uses: a webhook receiver, a dynamically generated PDF or image, an RSS feed endpoint, or a raw JSON API meant for external consumption — the same conceptual role as a Next.js Route Handler, but expressed through Remix's unified file-based routing rather than a separate <code>app/api/</code> convention.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"It's a route with a loader or action but no rendered component — meant to be hit as a raw endpoint rather than a page. I've used it for things like a webhook receiver or a generated file download, where the response genuinely isn't HTML. It's Remix's version of the same need Next.js's separate Route Handler convention addresses, just expressed through the same unified routing system rather than a distinct folder pattern."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://remix.run/docs/en/main/guides/resource-routes">Resource Routes — Remix docs</a></p>
+</article>
+<h2 id="s5">Block 5</h2>
+<h3>Hydration deep dive</h3>
+<p class="sec-intro">Hydration mismatches are the single most common real-world SSR bug, and this block is where interviewers check whether a candidate can actually explain why one happens, not just recognize the console warning.</p>
+
+<article class="q" data-pop="4" data-tags="hydration">
+  <div class="qh"><span class="num">031</span><span class="pop p4"><span class="d">●●●●</span>Near-certain</span><span class="tag">What hydration actually does</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Precisely explain what "hydration" means — what is the client actually doing to the server-rendered HTML?</p>
+  <div class="a">
+    <p>The server sends fully-rendered, static HTML — visible content, but with <b>no event listeners attached</b> and no client-side component instances running. Hydration is the process where React (or the equivalent framework runtime) runs on the client, walks the <b>existing DOM</b> that was just received, and <b>attaches</b> its component instances, state, and event listeners to that already-present markup — rather than throwing it away and re-rendering from scratch. The critical assumption underpinning this: the client-side render output must <b>match</b> what the server actually sent, since the framework is reusing the DOM nodes, not replacing them — if they don't match, you get a hydration mismatch.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"The server's HTML is static — it looks right but nothing's wired up yet, no event listeners, no component state. Hydration is the client running the same component tree and attaching itself to the DOM that's already there instead of throwing it away and re-rendering fresh — which is exactly why it's fast, it's reusing the existing markup rather than rebuilding it. But that reuse only works if the client's render output actually matches what the server sent, because the framework isn't diffing against nothing, it's trying to reconcile against real DOM nodes it expects to already be correct."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://react.dev/reference/react-dom/client/hydrateRoot">hydrateRoot — React docs</a></p>
+</article>
+
+<article class="q" data-pop="4" data-tags="hydration-mismatch">
+  <div class="qh"><span class="num">032</span><span class="pop p4"><span class="d">●●●●</span>Near-certain</span><span class="tag">Common mismatch causes</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Give three concrete, realistic causes of a hydration mismatch, and explain why each one produces different server vs client output.</p>
+  <div class="a">
+    <p><b>Non-deterministic values</b> — <code>Date.now()</code>, <code>Math.random()</code>, or anything time/randomness-dependent evaluated separately on server and client will almost certainly differ between the two renders. <b>Browser-only APIs used unguarded</b> — checking <code>typeof window !== 'undefined'</code> and rendering different content based on it means the server (no <code>window</code>) and client (has <code>window</code>) genuinely produce different output by design, which is itself the mismatch. <b>Invalid HTML nesting</b> — a <code>&lt;div&gt;</code> nested inside a <code>&lt;p&gt;</code>, for instance; the browser's own HTML parser <b>silently corrects</b> invalid nesting while parsing the server's HTML string, so what the browser actually has in the DOM differs from what React's virtual representation expects, even though the server "sent" the div nested in the p.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"Non-deterministic values are the most obvious — anything using Date.now or Math.random directly in render will differ between the two passes almost by definition. Guarding on window existing and branching render output based on it is a mismatch by design, since the server genuinely doesn't have that global. And the one that trips people up the most: invalid HTML nesting, because the browser's parser silently fixes it while parsing the server's HTML string, so the actual DOM the browser ends up with doesn't match what the server thought it sent, even though nothing about the data changed at all."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://react.dev/reference/react-dom/client/hydrateRoot#handling-different-client-and-server-content">Handling different client and server content — React docs</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="hydration-mismatch">
+  <div class="qh"><span class="num">033</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">Recovering from a mismatch</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">When React detects a hydration mismatch, what does it actually do to recover — does the app just crash?</p>
+  <div class="a">
+    <p>React doesn't crash outright; when it detects that the server-rendered DOM doesn't match what the client render would produce, it <b>discards the mismatched subtree</b> and <b>re-renders it client-side from scratch</b>, patching the DOM to match the client's actual output — the app keeps working, but this recovery process throws away the benefit of hydration for that subtree (no reuse of the existing DOM, a real client-side re-render happens) and logs a warning to the console. The practical cost isn't a broken app, it's a <b>performance regression</b> — you're paying full client-side render cost for the mismatched portion instead of the cheap hydration you were counting on, and a visible flash/layout shift can occur as the DOM gets patched.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"It's not a hard crash — React detects the mismatch, throws away the affected subtree, and re-renders it client-side to match what the client actually computes, patching the DOM accordingly. The real cost is that you've silently lost the performance benefit hydration was supposed to give you for that part of the tree, and there's often a visible flash or layout shift as the DOM gets corrected. So a hydration mismatch isn't catastrophic, but it's a genuine, measurable performance and UX regression that's easy to miss in dev because the warning is easy to dismiss as noise."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://react.dev/reference/react-dom/client/hydrateRoot#handling-different-client-and-server-content">Handling different client and server content — React docs</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="hydration">
+  <div class="qh"><span class="num">034</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">suppressHydrationWarning</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">When is <code>suppressHydrationWarning</code> a legitimate tool versus a dangerous band-aid?</p>
+  <div class="a">
+    <p>It's legitimate for genuinely <b>unavoidable, cosmetic</b> mismatches you fully understand and accept — the canonical example is rendering a relative timestamp ("2 minutes ago") that will inevitably differ by a few seconds between server render time and client hydration time; the mismatch is real but harmless, and suppressing the warning for just that specific element is reasonable since there's no actual bug to fix. It's a <b>dangerous band-aid</b> when used to silence a warning without understanding <em>why</em> the mismatch is happening — it only suppresses the console warning for that specific DOM node, it doesn't actually fix any underlying rendering inconsistency, and reaching for it reflexively can mask a real bug (like a genuine data inconsistency between server and client) that happens to also produce a hydration warning.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"I only reach for it when I fully understand the mismatch and it's genuinely harmless — a relative timestamp that's expected to be off by a few seconds is the textbook case. What I won't do is use it as a reflexive fix for a hydration warning I haven't actually diagnosed, because it only silences the console message for that node, it doesn't fix whatever's actually causing the discrepancy — and sometimes that discrepancy is a real bug, like server and client genuinely disagreeing about the underlying data, which suppressing the warning would just hide rather than solve."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://react.dev/reference/react-dom/components/common#suppressing-unavoidable-hydration-mismatch-errors">suppressHydrationWarning — React docs</a></p>
+</article>
+
+<article class="q" data-pop="2" data-tags="progressive-hydration">
+  <div class="qh"><span class="num">035</span><span class="pop p2"><span class="d">●●○○</span>Common</span><span class="tag">Progressive / selective hydration</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">What is progressive hydration, and what problem does it solve compared to hydrating the entire page at once?</p>
+  <div class="a">
+    <p>Hydrating an entire page's component tree in one synchronous pass means the browser's main thread is <b>blocked</b> for the duration of that hydration work — on a large page, this can delay interactivity even though the content is already visually present (the "uncanny valley" of a page that looks ready but doesn't respond to clicks yet). <b>Progressive (selective) hydration</b> hydrates the page in <b>prioritized chunks</b> — React's Suspense boundaries let different sections hydrate independently and out of strict document order, prioritizing sections the user is actually interacting with (React can detect a click on a not-yet-hydrated component and prioritize hydrating that specific part first) over sections still off-screen or lower priority.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"All-at-once hydration blocks the main thread for its full duration, which on a large page creates exactly that frustrating gap where content is visible but nothing responds to a click yet. Progressive hydration breaks the page into independently hydratable chunks via Suspense boundaries, and React can actually prioritize hydrating whatever the user just interacted with over sections that are off-screen or lower priority. It directly targets that uncanny-valley window between visible and actually interactive, which matters a lot on content-heavy pages with a lot of hydration work to do."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://react.dev/reference/react-dom/server/renderToPipeableStream#selective-hydration">Selective hydration — React docs</a></p>
+</article>
+
+<article class="q" data-pop="1" data-tags="resumability">
+  <div class="qh"><span class="num">036</span><span class="pop p1"><span class="d">●○○○</span>Occasional</span><span class="tag">Resumability vs hydration</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Frameworks like Qwik talk about "resumability" as an alternative to hydration. What's the actual conceptual difference?</p>
+  <div class="a">
+    <p>Traditional hydration <b>re-executes</b> component code client-side to rebuild the framework's internal understanding of the page's state and event listeners, even though the server already did equivalent work to produce the HTML — this re-execution is exactly what causes hydration's cost to scale with page complexity. <b>Resumability</b> aims to <b>serialize the application's state</b> (including what event listeners are needed where) as part of the server output, so the client can <b>resume</b> exactly where the server left off without re-running component logic at all — event listeners are attached lazily, only when actually triggered, by looking up serialized instructions rather than by having run the component's full setup logic client-side first. The practical promise is near-zero JavaScript execution cost until a user actually interacts with something.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"Hydration re-runs component logic client-side to rebuild what the server already effectively knew, which is exactly why hydration cost scales with how much of the page needs re-executing. Resumability's pitch is serializing enough state and listener information into the server output that the client can pick up exactly where the server left off without re-running that setup logic at all — listeners get attached lazily on actual interaction rather than upfront. It's still a less mature, less battle-tested approach than hydration in most production ecosystems, but the theoretical ceiling on initial JS execution cost is genuinely lower."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://qwik.dev/docs/concepts/resumable/">Resumable — Qwik docs</a></p>
+</article>
+<h2 id="s6">Block 6</h2>
+<h3>BFF pattern &amp; design</h3>
+<p class="sec-intro">This block covers the design-level thinking behind a BFF — when it's actually warranted, how it should be scoped, and what its real responsibilities are, before the next block gets into implementing one in Node.</p>
+
+<article class="q" data-pop="4" data-tags="bff">
+  <div class="qh"><span class="num">037</span><span class="pop p4"><span class="d">●●●●</span>Near-certain</span><span class="tag">What a BFF actually is</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Precisely define the Backend-For-Frontend pattern — what problem does it solve that calling backend services directly from the client doesn't?</p>
+  <div class="a">
+    <p>A BFF is a <b>dedicated backend layer</b>, owned by (or built specifically for) a particular frontend client, that sits between that client and the underlying domain/microservices, <b>aggregating and reshaping</b> calls to those services into exactly the response shape that specific client needs. Without it, a frontend either makes <b>many separate round trips</b> to different backend services directly (slow, chatty, especially bad on mobile networks) or receives a generic, one-size-fits-all response shaped for no client in particular (bloated for mobile, possibly insufficient for a data-dense desktop dashboard). The BFF exists specifically to let each client type get a response tailored to it, without forcing the underlying domain services to know or care about any particular frontend's specific needs.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"It's a backend layer that exists for one specific frontend's needs, aggregating and reshaping calls to the actual domain services into exactly the shape that frontend wants. Without it, a client either makes a bunch of separate round trips itself, which is genuinely painful on a mobile network, or gets a generic response that's either bloated for a lightweight client or insufficient for a data-heavy one. The BFF absorbs that shaping responsibility so the underlying domain services stay generic and client-agnostic, and each frontend gets something tailored without the backend needing to know anything about frontend-specific concerns."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/backends-for-frontends">Backends for Frontends pattern — Microsoft</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="bff-vs-gateway">
+  <div class="qh"><span class="num">038</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">One BFF per client type</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Would you build one shared BFF for both your web and mobile apps, or a separate BFF per client type? Justify the trade-off.</p>
+  <div class="a">
+    <p>A single shared BFF trying to serve genuinely divergent client needs (a data-dense web dashboard vs a bandwidth-constrained mobile app) tends to <b>drift back toward the generic-gateway problem</b> the BFF pattern was meant to solve — the shared BFF ends up accumulating conditional logic and optional fields to satisfy both clients, becoming a compromise that serves neither well. The core BFF principle is <b>one BFF per client experience</b> — web BFF, mobile BFF, potentially a partner/third-party API BFF — each independently owned, deployed, and evolved without needing to coordinate changes with the other client's needs. The cost is more services to build and operate; the benefit is each one stays genuinely optimized for its specific client rather than becoming a shared compromise.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"I'd default to separate BFFs per client type, because a shared one tends to slowly become the same generic, one-size-fits-all gateway the pattern exists to avoid — it accumulates conditionals and optional fields to satisfy divergent needs instead of staying tailored to either. The real cost is operational, more services to build and deploy, but the benefit is each BFF can evolve independently and stay genuinely optimized for its one client, rather than every change needing to be checked against whether it breaks a completely different client's needs."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://samnewman.io/patterns/architectural/bff/">Pattern: Backends For Frontends — Sam Newman</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="bff-ownership">
+  <div class="qh"><span class="num">039</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">Who owns the BFF</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Should the frontend team or the backend team own and operate a given BFF? What does the answer depend on?</p>
+  <div class="a">
+    <p>The strongest argument for <b>frontend team ownership</b> is that the BFF's entire reason for existing is shaping data for that team's specific client — the people who understand exactly what the UI needs are best positioned to define and evolve that shape without a cross-team request cycle for every change. The counter-consideration: a BFF is still a real backend service (needs proper error handling, observability, security review, deployment pipeline), and a frontend team without backend operational experience may under-invest in those concerns. In practice, the answer often depends on team structure and skill distribution — some organizations have genuinely full-stack teams where this is a non-issue, others deliberately keep the BFF backend-owned but with a tight feedback loop and frontend input on the actual shape, treating it as a backend service that serves one specific frontend's product requirements rather than a frontend concern implemented in a backend language.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"The strongest argument for frontend ownership is that they know exactly what shape the UI needs without a cross-team round trip for every change. The counter-argument is a BFF is still a real service — it needs proper error handling, observability, security review — and that's easy to under-invest in without backend operational experience. In practice I've seen this work well both ways depending on whether the team is genuinely full-stack; what matters more than the org chart answer is making sure whoever owns it treats it as a real service with real operational rigor, not just 'frontend logic that happens to run in Node.'"</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://samnewman.io/patterns/architectural/bff/">Pattern: Backends For Frontends — Sam Newman</a></p>
+</article>
+
+<article class="q" data-pop="2" data-tags="bff-scope">
+  <div class="qh"><span class="num">040</span><span class="pop p2"><span class="d">●●○○</span>Common</span><span class="tag">What belongs in a BFF</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">What kind of logic belongs in a BFF, and what should deliberately stay out of it and live in the underlying domain services instead?</p>
+  <div class="a">
+    <p>Belongs in the BFF: <b>presentation-oriented aggregation</b> (combining data from multiple services into one client-shaped response), <b>client-specific formatting</b> (date formats, field naming conventions a specific client expects), and <b>orchestration</b> of multiple downstream calls needed for one client-facing operation. Should <b>not</b> live in the BFF: core <b>business logic</b> and validation rules that represent actual domain invariants (a discount calculation, an inventory rule) — those belong in the domain service that owns that concept, so the rule is enforced consistently regardless of which client or BFF is calling it. A BFF re-implementing business rules independently risks <b>duplicated, drifting logic</b> across multiple BFFs, each potentially enforcing a slightly different version of the same rule over time.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"Aggregation, client-specific shaping, and orchestrating multiple downstream calls for one client operation — that's squarely BFF territory. Real business logic and domain invariants need to stay in the actual domain service that owns them, not get reimplemented in the BFF, because the moment you have multiple BFFs each independently implementing the same business rule, they will eventually drift out of sync with each other. I think of the BFF as a presentation and orchestration layer, not a place where domain logic should live at all."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/backends-for-frontends">Backends for Frontends pattern — Microsoft</a></p>
+</article>
+
+<article class="q" data-pop="2" data-tags="bff-vs-graphql">
+  <div class="qh"><span class="num">041</span><span class="pop p2"><span class="d">●●○○</span>Common</span><span class="tag">BFF vs a single GraphQL gateway</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">A GraphQL gateway already lets clients request exactly the fields they need. Does that eliminate the need for a BFF pattern?</p>
+  <div class="a">
+    <p>It reduces some of the need — a single, well-designed GraphQL schema lets different clients naturally request different shapes from the <b>same</b> underlying gateway, which addresses a chunk of what a BFF solves (avoiding over-fetching, avoiding client-specific REST endpoints). What it doesn't fully replace: <b>client-specific business/orchestration logic</b> that isn't purely about field selection — complex client-specific validation, non-trivial multi-step orchestration a single GraphQL query can't naturally express, or genuinely divergent auth/session handling per client type. Some teams do use a shared GraphQL layer as their BFF-equivalent; others build client-specific GraphQL gateways (or REST BFFs) on top of an internal GraphQL or REST domain layer specifically because a fully shared schema starts accumulating the same client-specific compromise problem a shared REST BFF would.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"A shared GraphQL gateway genuinely solves a chunk of what BFFs solve — clients can shape their own response instead of getting a fixed, generic payload. What it doesn't fully replace is client-specific orchestration and logic that isn't just field selection — genuinely different auth flows per client, or multi-step logic a single query can't naturally express. I've seen both patterns work: a well-designed shared GraphQL schema as the de facto BFF layer, or client-specific gateways on top of a shared domain layer when the divergence between clients is significant enough that a single schema starts accumulating the same compromises a shared REST BFF would."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://www.apollographql.com/blog/backend-for-frontend-vs-api-gateway">BFF vs API Gateway — Apollo GraphQL blog</a></p>
+</article>
+
+<article class="q" data-pop="1" data-tags="bff-antipattern">
+  <div class="qh"><span class="num">042</span><span class="pop p1"><span class="d">●○○○</span>Occasional</span><span class="tag">When a BFF is overkill</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">When would introducing a BFF be unnecessary complexity for a project rather than a genuine architectural improvement?</p>
+  <div class="a">
+    <p>A BFF earns its cost when there's real <b>divergence</b> between what different clients need, or genuine aggregation complexity across multiple backend services that would otherwise burden the client. For a project with a <b>single client type</b> and a backend that's already reasonably shaped for that client's needs (a simple app talking to one well-designed API), adding a BFF layer is pure overhead — another service to deploy, monitor, and maintain, solving a problem (client-specific shaping across divergent clients) that doesn't actually exist yet. This is a specific instance of the general principle that architectural patterns should be justified by a concrete, present need, not adopted preemptively because they're a recognized best practice in the abstract.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"If there's one client type and the backend is already reasonably shaped for it, a BFF is pure added operational overhead solving a problem that doesn't exist yet — no divergent client needs, no real aggregation complexity to hide. I'd want to see genuine multi-client divergence, or real orchestration complexity that's currently burdening the client, before recommending one. Adopting it because it's a recognized pattern rather than because of an actual present need is the same mistake as premature microservices — solving tomorrow's hypothetical problem at the cost of today's real simplicity."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://martinfowler.com/bliki/Yagni.html">Yagni — Martin Fowler</a></p>
+</article>
+<h2 id="s7">Block 7</h2>
+<h3>BFF implementation in Node</h3>
+<p class="sec-intro">This is where design theory turns into actual code — auth passthrough, response shaping, and resilience patterns for a BFF calling several downstream services on behalf of one request.</p>
+
+<article class="q" data-pop="4" data-tags="bff-auth">
+  <div class="qh"><span class="num">043</span><span class="pop p4"><span class="d">●●●●</span>Near-certain</span><span class="tag">Auth passthrough</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Your BFF receives an authenticated request from the client and needs to call three downstream domain services on the user's behalf. How do you handle auth across that hop?</p>
+  <div class="a">
+    <p>The BFF typically <b>terminates</b> the client-facing auth (validating the client's session cookie or token) and then needs its own mechanism to prove to downstream services <em>who</em> it's acting on behalf of. Common patterns: <b>token passthrough</b> — forward the same (or a re-signed) token to downstream services, which independently validate it, so each service still enforces its own authorization against the actual user's identity; or <b>service-to-service auth</b> — the BFF authenticates to downstream services with its <em>own</em> service identity, separately passing the user's ID as a claim/parameter, with downstream services trusting the BFF's own credential and using the passed user ID for authorization decisions. The choice affects the security model significantly: passthrough keeps authorization decisions decentralized and closer to standard token validation everywhere; service-identity-plus-user-claim requires downstream services to <b>trust the BFF</b> not to lie about which user it's acting for, which is a real trust boundary decision, not a minor implementation detail.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"Two real patterns, and the choice is a genuine trust-boundary decision, not just implementation detail. Token passthrough keeps it simple — downstream services validate the same token independently, so authorization stays decentralized and each service enforces its own rules against the real user identity. Service-to-service auth has the BFF use its own service credential and separately assert which user it's acting for, which means downstream services now have to trust the BFF isn't lying about that — that's a real security decision I'd want explicit sign-off on, not something I'd default into quietly."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/backends-for-frontends">Backends for Frontends pattern — Microsoft</a></p>
+</article>
+
+<article class="q" data-pop="4" data-tags="bff-aggregation">
+  <div class="qh"><span class="num">044</span><span class="pop p4"><span class="d">●●●●</span>Near-certain</span><span class="tag">Parallel aggregation with partial failure</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Your BFF's dashboard endpoint calls three independent downstream services in parallel to build one response. One of them fails. What should happen?</p>
+  <div class="a">
+    <p>The naive approach — using <code>Promise.all</code> — fails the <b>entire</b> response the instant any one of the three calls rejects, even if the other two succeeded and could've been usefully returned. The better default: <code>Promise.allSettled</code>, which waits for all three and reports each one's individual success or failure, letting the BFF <b>partially fulfill</b> the response — return the data that succeeded, and either omit or mark-as-unavailable the section that failed, rather than failing the whole dashboard because one non-critical widget's data source had a bad moment. Whether this graceful degradation is the right call depends on whether each piece of the aggregated response is truly independent and non-essential — a payment status section failing might legitimately need to fail the whole response if the page fundamentally can't be shown without it.</p>
+  </div>
+  <pre><code><span class="k">const</span> results = <span class="k">await</span> Promise.allSettled([
+  fetchUserProfile(userId),
+  fetchRecentOrders(userId),
+  fetchRecommendations(userId),
+]);
+
+<span class="k">const</span> [profile, orders, recommendations] = results.map(r =>
+  r.status === <span class="s">'fulfilled'</span> ? r.value : <span class="k">null</span>
+);
+<span class="c">// respond with whatever succeeded; client renders null sections as unavailable</span></code></pre>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"Promise.all fails the whole response the moment any one call rejects, which is almost never what I actually want for a dashboard aggregating genuinely independent widgets. I default to Promise.allSettled and return what succeeded, marking the failed section as unavailable rather than failing everything. The exception is when a piece genuinely isn't optional — if the page can't meaningfully render without one specific dependency, that's a case where I do want the whole request to fail rather than silently degrade into something broken-looking."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled">Promise.allSettled — MDN</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="bff-response-shaping">
+  <div class="qh"><span class="num">045</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">Response shaping</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">A downstream domain service returns a large, generic entity with 40 fields. Your mobile client only needs 5 of them. How would you handle the shaping, and why does it matter?</p>
+  <div class="a">
+    <p>The BFF explicitly <b>projects</b> the domain service's response down to exactly the fields the specific client actually needs, before sending its own response — never simply passing through the domain service's raw response unmodified. This matters for more than bandwidth: it also <b>decouples</b> the client from the domain service's internal shape, so a domain service adding, renaming, or restructuring fields it owns doesn't automatically break the client, as long as the BFF's own contract with the client stays stable and the BFF adapts its internal mapping when the upstream shape changes. The BFF becomes the actual stable API contract for the client, insulating it from churn in the underlying services.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"I always explicitly project down to what the client actually needs rather than passing the domain service's response through unmodified — partly for payload size, especially on mobile, but the bigger reason is decoupling. If the domain service restructures a field it owns, that should be an internal mapping change in the BFF, not a breaking change for the client, as long as the BFF's own external contract stays stable. Passing responses through unshaped means the client is implicitly coupled to every upstream service's internal shape, which defeats a lot of the point of having a BFF in the first place."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://samnewman.io/patterns/architectural/bff/">Pattern: Backends For Frontends — Sam Newman</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="bff-resilience">
+  <div class="qh"><span class="num">046</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">Timeout budgets in a BFF</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Your BFF aggregates calls to five downstream services with an overall 2-second response budget for the client. How do you allocate timeouts across those five calls?</p>
+  <div class="a">
+    <p>If all five calls run in <b>parallel</b> (the common case for independent aggregation), each individual call's timeout can reasonably be close to the full budget minus a small margin for the BFF's own processing/response-shaping overhead — since they're not consuming the budget sequentially. If any calls are <b>sequential</b> (one depends on another's result), their timeouts need to sum to <b>less</b> than the total budget, decreasing appropriately down the dependency chain, exactly like the general timeout-budget principle from distributed systems. Regardless of parallel or sequential, each individual timeout should still be meaningfully <b>shorter</b> than the overall budget — never equal to it — so there's always some margin left for the BFF to actually assemble and return a response (even a partial one) rather than the last downstream call's timeout consuming the entire budget with nothing left over.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"For calls running in parallel, each can have a timeout close to the full budget minus some margin for the BFF's own processing, since they're not competing for budget sequentially. For anything sequential, the timeouts have to sum to under the total budget, shrinking down the chain. The detail I always build in regardless is real margin — no individual timeout should equal the overall budget, because then there's zero time left for the BFF to actually assemble and return even a partial response once that call finally times out."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/">Timeouts, retries, and backoff with jitter — AWS</a></p>
+</article>
+
+<article class="q" data-pop="2" data-tags="bff-caching">
+  <div class="qh"><span class="num">047</span><span class="pop p2"><span class="d">●●○○</span>Common</span><span class="tag">Caching at the BFF layer</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Would you add caching at the BFF layer, given the underlying domain services might already cache their own data?</p>
+  <div class="a">
+    <p>Yes, and it's a distinct, additive optimization, not redundant with domain-service-level caching. The domain service's cache saves it from redoing its own expensive work; a <b>BFF-level cache</b> saves the BFF from making the <b>network round trip</b> to that service at all, and — since a BFF's response is often an <b>aggregation</b> of several downstream calls — a BFF-level cache of the final assembled response can save re-running the entire aggregation (all five downstream calls) for a request pattern that repeats frequently, which the domain services' individual caches can't provide on their own since each only knows about its own piece.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"They're solving different problems, not duplicating each other. The domain service's own cache saves it redoing expensive internal work. The BFF's cache saves the network round trip and, more importantly, saves re-running an entire multi-service aggregation for a request shape that repeats often — none of the individual domain services' caches can give you that, since each only knows about its own slice. I'd absolutely cache at the BFF layer for anything aggregated and frequently requested, with a TTL that respects how fresh the assembled response actually needs to be."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://redis.io/docs/latest/develop/use/patterns/">Redis patterns</a></p>
+</article>
+
+<article class="q" data-pop="1" data-tags="bff-versioning">
+  <div class="qh"><span class="num">048</span><span class="pop p1"><span class="d">●○○○</span>Occasional</span><span class="tag">BFF versioning with mobile clients</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Your mobile app's BFF needs to change response shape, but old app versions still in the wild can't be forced to update immediately. How do you handle that?</p>
+  <div class="a">
+    <p>Unlike a web frontend (which can be redeployed instantly, forcing everyone onto the new BFF contract simultaneously), mobile clients have a <b>long tail of old versions</b> still in active use, often for months, since users update on their own schedule and app store review adds further delay. The BFF typically needs to support <b>multiple response shapes concurrently</b> for some transition period — either via API versioning (the mobile app sends its version, the BFF branches its response shape accordingly) or by making changes additively (new fields added without removing or restructuring old ones the old app version still depends on) until the old version's usage has dropped low enough to justify dropping support for it, based on real usage data, not an assumption about how fast users update.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"Mobile breaks the assumption that deploying the backend instantly moves everyone onto the new contract — old app versions can be in the wild for months. I'd handle this with additive-only changes where possible, so old clients keep working unaware anything changed, or explicit version-aware branching in the BFF when a breaking change is unavoidable. Either way, I'd want real telemetry on old-version usage before dropping support for anything, rather than picking an arbitrary sunset date — 'most users update within two weeks' is an assumption, not something I'd bet a broken app experience on for the users who haven't."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design#versioning-a-restful-web-api">Versioning a RESTful web API — Microsoft</a></p>
+</article>
+<h2 id="s8">Block 8</h2>
+<h3>Streaming &amp; Suspense on the server</h3>
+<p class="sec-intro">This block goes deeper on server-side Suspense mechanics than block 1's introduction — the actual HTTP-level implementation, ordering guarantees, and where streaming SSR can go wrong in practice.</p>
+
+<article class="q" data-pop="4" data-tags="streaming-mechanics">
+  <div class="qh"><span class="num">049</span><span class="pop p4"><span class="d">●●●●</span>Near-certain</span><span class="tag">How streaming SSR works over HTTP</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Mechanically, how does a server stream HTML in chunks over a single HTTP response — what's actually happening at the protocol level?</p>
+  <div class="a">
+    <p>The server uses <b>chunked transfer encoding</b> (or, over HTTP/2, its native stream multiplexing) rather than sending one response with a known <code>Content-Length</code> upfront — the response headers go out immediately, then the body is sent as a series of <b>chunks</b> as they become available, with the connection staying open between chunks. For Suspense-based streaming SSR specifically: the initial chunk includes the page shell and everything that resolved synchronously, with <b>placeholder markers</b> (a loading fallback) for anything still pending; as each pending piece resolves, the server sends an additional chunk containing that piece's actual HTML plus a small inline script that <b>swaps</b> the placeholder for the real content in the already-received DOM, without a full page reload or additional HTTP request.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"It's chunked transfer encoding — the response starts before the server knows the total content length, and chunks stream out over the same open connection as each piece resolves. For Suspense streaming specifically, the first chunk has the shell plus placeholders for anything still pending, and each subsequent chunk carries the real content for one resolved piece along with a tiny inline script that swaps it into place in the DOM that's already there — no additional request, no full reload, just progressive replacement of placeholder content as it becomes available."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding">Transfer-Encoding — MDN</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="suspense-ordering">
+  <div class="qh"><span class="num">050</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">Out-of-order streaming</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">If a page has three Suspense boundaries and the third one's data resolves first, does its content appear in the DOM before the first two?</p>
+  <div class="a">
+    <p>Visually and in terms of DOM position, <b>no</b> — the framework preserves the <b>document order</b> the boundaries were declared in, regardless of which one's data resolves first. What actually happens: the third boundary's content is sent as soon as it's ready (streaming isn't blocked waiting for the first two), but the inline script that arrives with it targets the <b>correct DOM position</b> for the third boundary specifically, so it gets inserted in its proper place in the layout even though it arrived "out of order" over the network relative to the first two boundaries, which might still be showing their loading state at that point.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"The network delivery order and the DOM insertion order are decoupled — the third boundary's content streams as soon as it's ready without waiting on the first two, but it still gets inserted into its correct position in the layout, not appended wherever it happens to arrive. So visually the page still looks structurally correct throughout, with the earlier boundaries still showing their loading state until their own data resolves, even though behind the scenes the third one's HTML physically arrived over the wire first."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://react.dev/reference/react-dom/server/renderToPipeableStream#streaming-a-large-language-model-response">renderToPipeableStream — React docs</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="streaming-caveats">
+  <div class="qh"><span class="num">051</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">Streaming and status codes</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Streaming SSR sends the response headers before the whole page is fully rendered. What real problem does that create if a component deep in the tree ends up throwing an error?</p>
+  <div class="a">
+    <p>By the time a deeply-nested component's data fails and throws, the response's <b>status code and headers have already been sent</b> as <code>200 OK</code> along with the initial streamed chunk — you can no longer change the response's status code after that point, since HTTP doesn't support retroactively altering headers already sent. The practical implication: an error occurring after streaming has begun has to be handled <b>within the stream itself</b> — typically by having React fall back to the nearest error boundary and stream <em>that</em> error UI into the affected section, rather than the response as a whole being able to report a genuine server error status. This is a real trade-off streaming SSR makes: faster perceived performance at the cost of losing the ability to send an accurate top-level HTTP status if something fails after the stream has already started.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"The headers, including the status code, are already committed as 200 by the time streaming has started, so an error surfacing later in a deeply nested component genuinely can't retroactively change that top-level status — HTTP just doesn't support that. What happens instead is the error gets caught by the nearest error boundary and its fallback UI streams into that specific section of the page. It's a real trade-off of streaming SSR that's worth being upfront about — you gain faster perceived load time but give up the ability to always report an accurate top-level status code for failures that happen after the stream has already begun."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://react.dev/reference/react-dom/server/renderToPipeableStream#onshellready">onShellReady and onShellError — React docs</a></p>
+</article>
+
+<article class="q" data-pop="2" data-tags="shell-vs-content">
+  <div class="qh"><span class="num">052</span><span class="pop p2"><span class="d">●●○○</span>Common</span><span class="tag">Shell readiness vs full readiness</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">React's server rendering APIs distinguish "shell ready" from "all ready." Why does that distinction matter for when you actually start streaming?</p>
+  <div class="a">
+    <p>"<b>Shell ready</b>" means everything <b>outside</b> Suspense boundaries has finished rendering — the page's basic structure and any synchronously-available content is done, and this is the earliest safe point to start sending the response to the browser, since the shell represents content that isn't going to change. "<b>All ready</b>" means every Suspense boundary has also resolved — the entire page, including all async content, is complete. Streaming SSR deliberately starts sending at <b>shell-ready</b>, not waiting for all-ready, specifically to get the fastest possible time-to-first-byte; waiting for all-ready would defeat the entire purpose of streaming and just be traditional blocking SSR with extra steps. Some use cases (bots that don't execute JS well, or when you need a fully complete response for a specific reason) may deliberately wait for all-ready instead, trading speed for completeness.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"Shell-ready is the earliest safe point to start streaming — everything outside Suspense boundaries is settled and won't change, even if async content inside those boundaries is still pending. Streaming SSR deliberately starts there rather than waiting for all-ready, since waiting for everything to resolve before sending anything would just be blocking SSR again, defeating the point. The one case I'd deliberately wait for all-ready is serving a bot that doesn't handle streaming or client-side content-swapping well, where a complete response upfront matters more than fast time-to-first-byte."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://react.dev/reference/react-dom/server/renderToPipeableStream#waiting-for-all-content-to-load-for-crawlers-and-static-generation">Waiting for all content — React docs</a></p>
+</article>
+
+<article class="q" data-pop="1" data-tags="streaming-infra">
+  <div class="qh"><span class="num">053</span><span class="pop p1"><span class="d">●○○○</span>Occasional</span><span class="tag">Proxy buffering breaking streaming</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">You've implemented streaming SSR correctly, but in production the page still loads all-at-once instead of progressively. What infrastructure-level cause would you check first?</p>
+  <div class="a">
+    <p>A very common real-world cause: something in the request path <b>buffers the entire response</b> before forwarding it, defeating streaming even though the origin server is correctly emitting chunks progressively. Culprits: a reverse proxy or CDN configured to buffer responses fully before caching/forwarding (some default nginx or CDN configurations do this), or a load balancer/serverless platform's own response-handling model that doesn't support streaming through to the client at all (some serverless function runtimes historically buffered the entire function output before returning it, incompatible with true streaming regardless of what the application code does). Diagnosing this means checking each hop between the origin and the browser, not just re-verifying the application code, since the code can be entirely correct and streaming can still be silently defeated by infrastructure.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"If the application code is genuinely streaming correctly but the browser still sees it arrive all at once, I'd look at every hop between origin and browser, not re-check the app code — a reverse proxy or CDN buffering the full response before forwarding is a very common culprit, and some serverless runtimes historically couldn't stream at all regardless of what the function itself does. This is exactly the kind of bug where the fix is infrastructure configuration, not application code, and where I'd check the actual response headers and timing at each hop to isolate which layer is doing the buffering."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://vercel.com/docs/functions/streaming-functions">Streaming functions — Vercel docs</a></p>
+</article>
+<h2 id="s9">Block 9</h2>
+<h3>Edge rendering &amp; deployment topology for SSR apps</h3>
+<p class="sec-intro">Deploying an SSR app well is a genuinely different problem than deploying a static site or a pure API — this block covers where rendering should actually happen geographically, and the operational trade-offs of each choice.</p>
+
+<article class="q" data-pop="4" data-tags="edge-rendering">
+  <div class="qh"><span class="num">054</span><span class="pop p4"><span class="d">●●●●</span>Near-certain</span><span class="tag">Edge SSR vs origin SSR</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">What does rendering "at the edge" actually mean for an SSR app, and what does it improve versus rendering at a single origin server?</p>
+  <div class="a">
+    <p>Traditional SSR runs at a <b>single origin</b> (or a small number of regions) — a user physically far from that origin pays real network latency just for the request/response round trip, before any rendering work even happens. <b>Edge rendering</b> runs the SSR logic in a <b>globally distributed</b> set of locations (often on edge runtimes like Cloudflare Workers or Vercel's Edge Runtime), physically close to the requesting user, so the network latency portion of the response time shrinks dramatically — the render itself doesn't get faster, but the round-trip cost surrounding it does. This matters most for genuinely <b>global</b> user bases and latency-sensitive pages; for an app whose users are geographically concentrated near a single origin already, edge rendering's benefit is much smaller.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"It's about physical distance, not making the render itself faster — a single origin server means every user far from it pays real network latency on top of render time, and edge rendering runs that same logic in many geographically distributed locations so users hit something physically close to them. The win is concentrated specifically in the network round-trip portion of the response time. For an app whose users are already geographically close to a single origin, edge rendering doesn't buy much, so I'd want to actually look at the user geography before treating it as an automatic win."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://vercel.com/docs/functions/runtimes/edge">Edge Runtime — Vercel docs</a></p>
+</article>
+
+<article class="q" data-pop="4" data-tags="edge-constraints">
+  <div class="qh"><span class="num">055</span><span class="pop p4"><span class="d">●●●●</span>Near-certain</span><span class="tag">Database access from the edge</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Your SSR app is deployed to the edge, but your database is in a single region. What actually happens to the latency benefit?</p>
+  <div class="a">
+    <p>If the page's render <b>depends on a database query</b>, and the database lives in one region far from the edge location handling a given user's request, the render is now bottlenecked by a <b>round trip back to that single-region database</b> — which can be slower than the original single-origin setup would have been, since the edge function itself is now geographically far from its own data dependency. Edge rendering's latency benefit is realized fully only when the data the render depends on is <b>also</b> distributed close to the edge (a globally-replicated database, an edge-cached data layer, or content that doesn't require a live database round trip at all). Deploying rendering to the edge without also addressing where the underlying data lives is a common mistake that can net out to little or even negative improvement.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"This is the trap a lot of teams fall into — moving rendering to the edge without moving the data closer too just relocates the bottleneck, and can make things worse, since now the edge function itself has to round-trip back to a single-region database, potentially from farther away than the original origin server was. The edge rendering benefit is only fully realized when the data layer is also distributed — a globally replicated database, edge caching, or content that doesn't need a live query at all. I always check where the actual data dependency lives before assuming edge deployment is a clean win."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://vercel.com/docs/functions/runtimes/edge#when-to-use-the-edge-runtime">When to use the Edge Runtime — Vercel docs</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="edge-vs-node-runtime">
+  <div class="qh"><span class="num">056</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">Edge runtime limitations for SSR</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">You're rendering a page at the edge and need to call a Node-only library (something using native modules or Node's crypto module extensively). What are your options?</p>
+  <div class="a">
+    <p>Edge runtimes are typically <b>restricted</b> environments (V8 isolates, not full Node) that don't support native modules or the full breadth of Node's built-in APIs. Options: find or build an <b>edge-compatible alternative</b> to the library (increasingly common as the ecosystem matures); move that specific piece of logic to a <b>traditional Node-runtime function</b> (many platforms let you mix edge and Node-runtime functions within the same app, choosing per-route), accepting the latency cost for that specific route while keeping everything else at the edge; or restructure so the Node-dependent work happens somewhere else entirely (a background job, a separate traditional server) and the edge-rendered page just consumes its already-processed output.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"First I'd check if there's an edge-compatible alternative to the library, since the ecosystem's caught up a lot. If not, most platforms let you mix edge and Node-runtime functions within the same app, so I'd move just that specific route to a traditional Node runtime and accept the latency trade-off there, rather than either forcing an edge-incompatible dependency to work or abandoning edge rendering for the whole app over one route's dependency. Mixing runtimes per-route is honestly the pragmatic default for most real apps rather than an all-or-nothing choice."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://nextjs.org/docs/app/building-your-application/rendering/edge-and-nodejs-runtimes">Edge and Node.js Runtimes — Next.js docs</a></p>
+</article>
+
+<article class="q" data-pop="2" data-tags="cdn-caching">
+  <div class="qh"><span class="num">057</span><span class="pop p2"><span class="d">●●○○</span>Common</span><span class="tag">CDN caching SSR output</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Can a CDN cache the output of an SSR page, given SSR is meant to be dynamic per-request? Under what conditions does that make sense?</p>
+  <div class="a">
+    <p>It can, and it's a genuinely common and valuable pattern — but only for pages whose rendered output is <b>the same for every visitor</b> at a given point in time (no per-user personalization baked into the HTML itself). A CDN can cache the rendered SSR output at the <b>edge</b> with a short TTL, so the first request pays the full SSR cost and subsequent requests within that TTL window are served instantly from cache — this is functionally similar to ISR but implemented at the CDN layer rather than the framework's own caching. It breaks down immediately for genuinely personalized pages, where every user's response legitimately differs — caching that would leak one user's content to another, the same category of bug as the earlier fetch-caching-personalized-data trap.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"It absolutely can, and it's a real pattern — cache the SSR output at the CDN edge with a short TTL, so only the first request in that window pays the full render cost. It only works when the output is genuinely the same for every visitor, though — the moment personalization is baked into the HTML itself, caching it risks leaking one user's content to another, which is the same class of bug as caching a personalized fetch response. I always check whether a page's output is actually shared across users before putting a CDN cache in front of its SSR response."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://vercel.com/docs/edge-network/caching">Edge Network Caching — Vercel docs</a></p>
+</article>
+
+<article class="q" data-pop="1" data-tags="regional-deployment">
+  <div class="qh"><span class="num">058</span><span class="pop p1"><span class="d">●○○○</span>Occasional</span><span class="tag">Multi-region vs edge</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">How does "multi-region deployment" differ from true "edge" deployment, and when would you choose the former?</p>
+  <div class="a">
+    <p><b>Multi-region</b> means running full application instances (still traditional Node servers, not restricted isolates) in a <b>handful</b> of geographic regions — much fewer locations than true edge deployment's often-hundreds of points of presence, but each region runs the <b>full, unrestricted</b> Node runtime with no edge-runtime API limitations. This is the right choice when the app genuinely needs full Node compatibility (native modules, unrestricted APIs) but still wants meaningfully reduced latency for a global user base — trading some of edge's fine-grained geographic distribution for the operational simplicity and full compatibility of running actual Node servers, just in more than one place.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"Multi-region is a handful of full, unrestricted Node deployments in different geographic regions, versus true edge's much larger number of restricted-runtime locations. I'd choose multi-region when the app genuinely needs full Node compatibility that an edge runtime can't provide, but still wants a meaningful latency improvement for a global audience over a single-region deployment — it's a middle ground that trades some of edge's finer geographic granularity for full compatibility and simpler operational reasoning, since it's still just Node servers, deployed in more than one place."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://vercel.com/docs/edge-network/regions">Regions — Vercel docs</a></p>
+</article>
+<h2 id="s10">Block 10</h2>
+<h3>Performance: Core Web Vitals from the server's perspective</h3>
+<p class="sec-intro">Core Web Vitals questions in a full-stack interview aren't testing frontend trivia — they're checking whether you understand which metrics your server-side and rendering decisions actually influence, versus which ones are purely client-side concerns.</p>
+
+<article class="q" data-pop="4" data-tags="lcp">
+  <div class="qh"><span class="num">059</span><span class="pop p4"><span class="d">●●●●</span>Near-certain</span><span class="tag">LCP and server rendering decisions</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Largest Contentful Paint measures when the largest visible element renders. What server-side and rendering-strategy decisions actually move this number?</p>
+  <div class="a">
+    <p>LCP is directly downstream of <b>how fast meaningful content reaches the browser</b> — server response time (TTFB) is a real component of it, since nothing can paint before the first byte arrives. Rendering strategy matters enormously: a CSR app's LCP element often can't render until <b>after</b> a full JS-fetch-then-data-fetch round trip, while SSR delivers the LCP element's content in the <b>initial HTML</b>, often dramatically improving LCP for content-heavy pages. Streaming SSR specifically helps when the LCP element is in the <b>fast-resolving</b> shell portion (not gated behind a slow Suspense boundary) — if the largest element happens to be inside a slow-loading Suspense boundary, streaming doesn't help LCP for that element at all, since it still has to wait for that specific data.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"TTFB is a real component, since nothing paints before the first byte, but the bigger lever is rendering strategy — SSR gets the LCP element's actual content into the initial HTML instead of gating it behind a client-side fetch round trip the way pure CSR does. The subtlety with streaming SSR specifically is it only helps if the largest element is in the fast shell — if it happens to be inside a slow Suspense boundary, streaming doesn't rescue LCP for that element, since it's still gated on that specific slow data. I always check which Suspense boundary actually contains the LCP candidate before assuming streaming solved the problem."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://web.dev/articles/lcp">Largest Contentful Paint — web.dev</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="cls">
+  <div class="qh"><span class="num">060</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">CLS from hydration</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">How can hydration itself cause Cumulative Layout Shift, even when the server-rendered HTML looked visually correct?</p>
+  <div class="a">
+    <p>If a component's <b>client-rendered</b> output ends up differing in dimensions from what the server rendered — a classic cause being content that depends on a client-only value not available during SSR (viewport width via a media query hook, a client-only feature-detection check) — the layout can visibly <b>shift</b> the moment hydration reconciles the client's actual output against what was initially shown, even without a full hydration-mismatch error being thrown. Another common cause: content streamed in later via a Suspense boundary <b>pushing</b> already-visible content around when it arrives, if space wasn't properly reserved for it upfront (no placeholder with matching dimensions).</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"Two real causes I watch for. One is a component whose client output genuinely differs in size from the server-rendered version — often something depending on a client-only value like actual viewport width — which shifts the layout the moment hydration reconciles it, even without throwing a hard hydration-mismatch error. The other is streamed-in Suspense content that doesn't have proper placeholder space reserved for it, so when it actually arrives it pushes everything below it around. Both are solvable — reserving explicit dimensions for the placeholder, and being careful about what genuinely needs to be client-only-derived — but they're easy to miss because neither shows up as an outright error."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://web.dev/articles/cls">Cumulative Layout Shift — web.dev</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="inp">
+  <div class="qh"><span class="num">061</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">INP and hydration cost</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Interaction to Next Paint replaced First Input Delay as a Core Web Vital. Why does an SSR page's hydration cost specifically hurt this metric?</p>
+  <div class="a">
+    <p>INP measures the delay between a user's interaction and the browser's next visual update in response — a page that's <b>visually complete</b> (thanks to SSR) but still <b>mid-hydration</b> is the exact scenario that hurts INP: the content is there, so the user tries to interact with it, but the main thread is busy running hydration JavaScript, so the interaction handler either isn't attached yet or the response is delayed by ongoing hydration work competing for the main thread. This is precisely the "uncanny valley" problem progressive/selective hydration exists to address — SSR alone can make INP <em>worse</em> in a specific sense, by making a page look ready to interact with well before it actually is, inviting interaction attempts during the most main-thread-congested window.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"This is the specific irony of SSR done without addressing hydration cost — making the page look ready sooner actually invites users to interact with it during exactly the window the main thread is busiest, running hydration. INP directly measures that gap between interaction and visual response, so a heavy hydration pass competing with an actual click handler shows up as bad INP even though the page 'loaded fast' by LCP standards. It's exactly why I don't treat a good LCP number as proof a page is actually performant — INP can tell a completely different story."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://web.dev/articles/inp">Interaction to Next Paint — web.dev</a></p>
+</article>
+
+<article class="q" data-pop="2" data-tags="bundle-size">
+  <div class="qh"><span class="num">062</span><span class="pop p2"><span class="d">●●○○</span>Common</span><span class="tag">RSC and JS bundle size</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">How do React Server Components structurally reduce client JS bundle size, beyond just "less code to ship"?</p>
+  <div class="a">
+    <p>Because Server Component code <b>never ships to the client at all</b>, not even in a code-split, lazily-loaded form — any dependency <em>only</em> used by Server Components (a markdown parser, a date formatting library, anything purely server-side logic) is <b>completely absent</b> from the client bundle, not merely deferred. This is structurally different from traditional code-splitting, which reduces <em>initial</em> bundle size by deferring code to a later chunk — that code still eventually ships to the client if that code path is reached. With Server Components, entire categories of dependencies are <b>architecturally excluded</b> from ever reaching the browser, which is a genuinely different mechanism than lazy-loading, not just a more aggressive version of it.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"It's a categorically different mechanism from code-splitting, not just a more aggressive version of it. Code-splitting defers when a chunk ships — it still eventually reaches the client if that path is hit. A dependency used only inside Server Components never ships at all, ever, because that code never runs client-side in the first place. A heavy server-only library like a markdown parser or a PDF generator just structurally can't bloat the client bundle if it's only ever imported from Server Component code — that's a real architectural win, not a build-optimization trick."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://react.dev/reference/rsc/server-components#removing-server-only-code-from-the-client-bundle">Removing server-only code from the client bundle — React docs</a></p>
+</article>
+
+<article class="q" data-pop="1" data-tags="measurement">
+  <div class="qh"><span class="num">063</span><span class="pop p1"><span class="d">●○○○</span>Occasional</span><span class="tag">Lab vs field data</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Why can a page score well on Core Web Vitals in Lighthouse (lab data) but still show poor real-world Core Web Vitals in the Chrome UX Report (field data)?</p>
+  <div class="a">
+    <p><b>Lab data</b> (Lighthouse, synthetic tests) runs under <b>controlled, consistent</b> conditions — a fixed simulated network speed, a fixed device profile, usually a cold cache and a single run. <b>Field data</b> (real user monitoring, CrUX) reflects the actual, highly <b>variable</b> conditions real users experience — slower devices, worse network conditions, varying cache states, and crucially, real user <b>behavior</b> like interacting with the page in ways a synthetic test never simulates. A page tuned to score well specifically on Lighthouse's fixed test conditions can genuinely underperform for a meaningful chunk of real users on older devices or worse connections that the lab test's fixed profile doesn't represent — which is exactly why field data, not lab data, is what actually determines Core Web Vitals-based search ranking impact.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"Lab data runs under one fixed, controlled condition — a specific simulated network and device — while field data reflects the genuinely wide spread of real devices, networks, and user behavior. A page can be tuned to look great under Lighthouse's specific fixed profile while still performing poorly for real users on older devices or slower connections that profile doesn't represent. Field data is what actually determines the real-world and ranking-relevant Core Web Vitals impact, so I treat a good Lighthouse score as a useful signal during development, not the actual measure of whether the page performs well for real users."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://web.dev/articles/lab-and-field-data-differences">Lab and field data differences — web.dev</a></p>
+</article>
+<h2 id="s11">Block 11</h2>
+<h3>Auth across the SSR/BFF boundary</h3>
+<p class="sec-intro">Auth in an SSR context has a genuinely different shape than a pure SPA — the server needs to know who the user is before it can even render, and session forwarding across the SSR-to-API boundary is where a lot of real bugs live.</p>
+
+<article class="q" data-pop="4" data-tags="ssr-auth">
+  <div class="qh"><span class="num">064</span><span class="pop p4"><span class="d">●●●●</span>Near-certain</span><span class="tag">How SSR knows who the user is</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">In a pure client-side app, auth state typically lives in memory or localStorage after login. How does an SSR page know who the user is before it's even rendered anything?</p>
+  <div class="a">
+    <p>The server needs access to the user's identity <b>at render time</b>, on the server, before any HTML is produced — this rules out anything that only exists client-side, like <code>localStorage</code>, which the server has no access to at all. The standard mechanism is a <b>cookie</b> — cookies are automatically included by the browser on every request, including the initial navigation request that triggers SSR, so the server can read the session/auth cookie from the incoming request headers and use it to fetch or validate the user's identity <em>before</em> starting to render, letting the initial HTML already reflect the correct authenticated (or anonymous) state without a client-side round trip after the fact.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"The server has zero access to localStorage, so that's off the table entirely for SSR — the mechanism has to be something the browser sends automatically with the request itself, which is exactly what a cookie does. The server reads the session cookie off the incoming request before it starts rendering, validates or fetches the user's identity, and the initial HTML already reflects the right authenticated state. That's a meaningfully different shape from a pure SPA, where auth state is typically established after an initial render, via a client-side check that happens post-mount."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies">HTTP cookies — MDN</a></p>
+</article>
+
+<article class="q" data-pop="4" data-tags="bff-session-forwarding">
+  <div class="qh"><span class="num">065</span><span class="pop p4"><span class="d">●●●●</span>Near-certain</span><span class="tag">Forwarding the session to a BFF's downstream calls</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">An SSR page's server-side render needs to call your BFF, which in turn calls a downstream API, all on behalf of the same logged-in user. Walk through how the auth context actually propagates through all three hops.</p>
+  <div class="a">
+    <p><b>Hop 1</b> (browser to SSR server): the browser automatically includes the session cookie on the navigation request. <b>Hop 2</b> (SSR server to BFF): this is a <b>server-to-server</b> call, and critically, cookies are <b>not</b> automatically forwarded between separate server processes the way a browser forwards them to a single origin — the SSR server has to <b>explicitly</b> read the incoming cookie and manually attach it (or an equivalent token derived from it) to its own outgoing request to the BFF. <b>Hop 3</b> (BFF to downstream service): same principle — the BFF has to explicitly forward whatever auth context it received, using one of the passthrough or service-identity patterns discussed earlier for BFF-to-downstream auth. Missing the explicit forwarding at hop 2 is a very common real bug: the SSR server successfully identifies the user via the cookie, but then makes an <b>unauthenticated</b> call to the BFF because nobody wired up forwarding that identity onward.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"The browser-to-SSR-server hop is automatic, since that's normal cookie behavior for a single origin. Every hop after that is server-to-server and nothing forwards automatically — the SSR server has to explicitly read the incoming cookie and attach it, or a derived token, to its own outgoing call to the BFF, and the BFF has to do the same thing forwarding to its downstream services. The bug I've actually seen in the wild is exactly the gap at that second hop — the SSR layer correctly identifies the user from the cookie, renders the page fine, but the server-to-server call to the BFF quietly goes out unauthenticated because forwarding wasn't wired up, and it only gets caught because the BFF call fails or, worse, silently returns generic unauthenticated data instead of the user's actual data."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://nextjs.org/docs/app/building-your-application/data-fetching/patterns#preventing-sensitive-data-from-being-exposed-to-the-client">Data fetching patterns — Next.js docs</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="oauth-ssr">
+  <div class="qh"><span class="num">066</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">OAuth callback with SSR</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Where does the OAuth authorization code exchange actually happen in an SSR app — client-side or server-side — and why does that choice matter?</p>
+  <div class="a">
+    <p>The exchange should happen <b>server-side</b>, in a Route Handler / resource route that serves as the OAuth callback URL — this keeps the <b>client secret</b> (required for the code-to-token exchange, as covered in the OAuth flow itself) entirely server-side, never exposed to the browser, and lets the resulting session be established via a <b>secure, httpOnly cookie</b> set directly by the server response, rather than a token being handled and stored by client-side JavaScript at all. Doing the exchange client-side would require either exposing the client secret to the browser (a serious security problem) or using a public-client flow without a secret, which is a legitimate pattern for genuinely public clients but a different, more constrained flow than what a server-rendered app with a real backend should default to.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"It should happen server-side, in whatever route handler serves as the OAuth callback, specifically so the client secret never has to exist in the browser at all. That also lets the resulting session be set as a secure, httpOnly cookie directly from the server response, rather than a token ever touching client-side JavaScript's reach, which closes off a real XSS-token-theft attack surface. For an app with an actual backend, doing this server-side isn't just a nice-to-have, it's the correct default — client-side token exchange is really meant for genuinely public clients that don't have a backend to hold a secret in the first place."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://datatracker.ietf.org/doc/html/rfc6749#section-4.1">RFC 6749 §4.1 — Authorization Code Grant</a></p>
+</article>
+
+<article class="q" data-pop="2" data-tags="middleware-auth">
+  <div class="qh"><span class="num">067</span><span class="pop p2"><span class="d">●●○○</span>Common</span><span class="tag">Auth checks in middleware vs per-page</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Would you check auth at the framework's middleware layer, or individually inside each protected page/route's own server logic? What's the trade-off?</p>
+  <div class="a">
+    <p><b>Middleware</b>-level auth checks (running before any page-specific logic, matched against a defined set of protected route patterns) give you a <b>single, centralized</b> enforcement point — hard to accidentally forget on a new protected route if the pattern-matching is broad enough, and the check runs before any wasted rendering work happens on an unauthorized request. The trade-off: middleware typically runs in a <b>restricted runtime</b> (often edge-runtime-like constraints even on a traditionally-deployed app) and has limited context about the specific page being accessed, so it's better suited to <b>coarse</b> checks ("is there a valid session at all") than fine-grained, resource-specific authorization ("does this specific user own this specific resource"), which usually still needs to happen in the actual page/route logic where the specific resource is being fetched anyway.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"I use middleware for the coarse check — is there a valid session at all — since that's a single centralized enforcement point that's hard to forget to add on a new protected route, and it rejects unauthorized requests before any rendering work happens. But middleware usually runs in a more restricted context and doesn't have deep knowledge of the specific resource being accessed, so fine-grained authorization — does this user actually own this specific resource — still needs to live in the page or route's own logic, right where that resource is being fetched anyway. It's a layered approach, not an either-or."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://nextjs.org/docs/app/building-your-application/routing/middleware">Middleware — Next.js docs</a></p>
+</article>
+
+<article class="q" data-pop="1" data-tags="csrf-ssr">
+  <div class="qh"><span class="num">068</span><span class="pop p1"><span class="d">●○○○</span>Occasional</span><span class="tag">CSRF with Server Actions</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Server Actions are invoked from a form, using cookie-based session auth. Does this reintroduce CSRF risk the way a traditional cookie-authenticated form submission would?</p>
+  <div class="a">
+    <p>Yes in principle — a mechanism that's cookie-authenticated and triggerable by a form submission is exactly the shape that's vulnerable to CSRF if unprotected, since the browser will happily attach the session cookie to a form submission <b>even if that form originated from a different, malicious site</b>. Modern frameworks implementing Server Actions typically build in <b>some form of built-in CSRF protection</b> (origin/referer header verification, or an implicit action-specific token) automatically, but this is exactly the kind of framework-provided safety net worth verifying rather than assuming — checking the specific framework's documentation on what protection is actually built in, and whether it covers your specific deployment setup (custom domains, subdomains), rather than treating "the framework probably handles it" as a verified fact.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"In principle, yes — cookie-based auth plus a form-triggerable action is exactly the classic CSRF shape. Most frameworks implementing this pattern do build in some protection, often origin or referer header checking, but I wouldn't just assume that coverage is complete for my specific setup — I'd actually verify what protection is built in and whether it holds up under things like custom domains or subdomain configurations, rather than trusting 'the framework probably handles it' as a fact I haven't checked. Auth mechanisms are exactly the category of thing I verify rather than assume."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations#security">Security — Server Actions and Mutations — Next.js docs</a></p>
+</article>
+<h2 id="s12">Block 12</h2>
+<h3>Senior behavior &amp; leadership</h3>
+<p class="sec-intro">The closing block every bank in this series ends with. SSR/BFF architecture decisions have unusually high organizational stakes — they sit at the frontend/backend seam — so this block leans on scenarios specific to that boundary.</p>
+
+<article class="q" data-pop="4" data-tags="behavioral">
+  <div class="qh"><span class="num">069</span><span class="pop p4"><span class="d">●●●●</span>Near-certain</span><span class="tag">Frontend vs backend team disagreement on BFF ownership</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Tell me about a time the frontend and backend teams disagreed about who should own a piece of BFF or SSR infrastructure. How did you help resolve it?</p>
+  <div class="a">
+    <p>This question probes whether a candidate can navigate a genuinely ambiguous ownership boundary — the BFF pattern deliberately sits between two traditional team boundaries, and reasonable people can disagree about where it belongs. What interviewers want to see: understanding of <b>both sides' legitimate concerns</b> (frontend wants fast iteration without cross-team coordination; backend wants operational rigor and consistency with other services), a process for reaching a decision that isn't just "whoever was more senior or louder won," and — critically — a decision that got actually <b>implemented</b> and revisited later based on how it worked in practice, not treated as permanently settled the moment it was decided.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"I'd walk through a real case where I made sure both sides' concerns were actually on the table explicitly — frontend's need for fast iteration without a cross-team request for every shape change, backend's need for operational consistency and rigor — rather than the decision being driven by whoever pushed harder. I'd emphasize how we actually made the call, usually some hybrid ownership with clear boundaries on what each side controlled, and that we revisited it a few months later based on how it was actually working, not just declared it settled and moved on. The BFF's ambiguous position between teams is a real recurring source of friction, and showing I can navigate that constructively is more valuable than showing I picked the 'right' answer."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://samnewman.io/patterns/architectural/bff/">Pattern: Backends For Frontends — Sam Newman</a></p>
+</article>
+
+<article class="q" data-pop="4" data-tags="behavioral">
+  <div class="qh"><span class="num">070</span><span class="pop p4"><span class="d">●●●●</span>Near-certain</span><span class="tag">Advocating for an SSR migration</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Tell me about a time you advocated for (or against) migrating a CSR app to SSR. How did you make the case, and were you right?</p>
+  <div class="a">
+    <p>A strong answer shows the case was made with <b>concrete, measured evidence</b> — actual Core Web Vitals data, actual SEO/crawl data, actual user geography and device distribution — rather than "SSR is generally better practice." It should also honestly acknowledge the <b>real cost</b> of such a migration (hydration complexity, a genuinely different mental model for the team to learn, infrastructure changes) rather than presenting it as a costless win, and ideally include what happened <b>after</b> the migration — did the predicted improvement actually materialize, and if it fell short of expectations, an honest accounting of why, since that intellectual honesty about outcomes is a stronger signal than a story that conveniently confirms the original decision was flawless.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"I'd frame the case around actual measured data — Core Web Vitals numbers, crawl behavior we could actually observe, real user geography — rather than a general 'SSR is best practice' argument, since that kind of appeal doesn't hold up well against a real cost-benefit conversation. I'd also be upfront about the real cost of the migration, hydration complexity and the team's learning curve especially, rather than presenting it as free. And I'd want to talk honestly about what happened afterward — whether the predicted improvement actually showed up in the metrics, and if it came in below expectations, what we learned from that gap, since that's a more credible story than one where everything worked out exactly as predicted."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://web.dev/articles/rendering-on-the-web">Rendering on the web — web.dev</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="behavioral">
+  <div class="qh"><span class="num">071</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">Debugging a hydration bug under pressure</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Walk me through how you'd approach debugging a hydration mismatch that only reproduces in production, not locally, with a stakeholder asking for an ETA.</p>
+  <div class="a">
+    <p>What's being tested here is <b>methodical diagnosis under pressure</b>, not a guessed answer. A strong approach: acknowledge the ETA question honestly rather than guessing a number under pressure ("I need to actually reproduce this before I can give you a real estimate — here's the process and roughly how long each step should take"); systematically narrow the <b>environment difference</b> between local and production (different data, different timing/network conditions, a production-only feature flag, real user agents vs a dev browser) rather than guessing at the cause; and communicate <b>progress incrementally</b> to the stakeholder rather than going silent until it's fully solved, which is itself a leadership behavior interviewers are listening for separately from the technical diagnosis itself.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"I wouldn't guess an ETA under pressure before I've actually reproduced the bug — I'd say so directly, and give a rough sense of the diagnostic process and timeline for at least getting a repro, which is usually more useful to a stakeholder than a confident-sounding number I can't back. Then I'd systematically narrow what's actually different between local and production — real data shape, timing, feature flags, real user agents — rather than guessing at causes. And I'd give the stakeholder incremental updates as I actually make progress, rather than disappearing until it's fully solved, since being unreachable during an active incident is its own kind of failure separate from the technical one."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://sre.google/sre-book/managing-incidents/">Managing Incidents — Google SRE book</a></p>
+</article>
+
+<article class="q" data-pop="3" data-tags="behavioral">
+  <div class="qh"><span class="num">072</span><span class="pop p3"><span class="d">●●●○</span>Very common</span><span class="tag">Pushing back on a BFF that's grown too much logic</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">You inherit a BFF that's slowly accumulated real business logic over time, contrary to the pattern's intended scope. How would you approach fixing that without a disruptive rewrite?</p>
+  <div class="a">
+    <p>This tests the same "understand before judging, then move incrementally" instinct from the earlier over-engineering behavioral question, applied to a specific architectural drift pattern. A strong answer avoids treating this as a simple cleanup — business logic accumulating in a BFF is usually a symptom of a <b>real friction point</b> (maybe the "proper" domain service was slow to change, or didn't exist yet when a deadline forced a shortcut), and understanding <em>why</em> it happened informs whether the fix is purely mechanical (move the logic) or needs to also address the underlying friction that caused the drift in the first place, or it'll just happen again. The mechanical fix itself should be incremental — identify and migrate one piece of misplaced logic at a time to its proper home, with tests, rather than a single large risky refactor.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"Before treating it as pure cleanup, I'd want to understand why the logic ended up there — usually it's a real friction point, like the actual domain service being slow to change or not existing yet under a deadline, and if I don't address that underlying cause, moving the logic once just means it drifts back the same way again later. Once I understand that, the actual migration is incremental — identify one piece of misplaced logic at a time, move it to where it belongs with tests around it, rather than one large risky refactor. I'd also want to flag the underlying friction to whoever can actually fix it, since the architectural drift is a symptom, not the root problem."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://martinfowler.com/bliki/TechnicalDebt.html">Technical debt — Martin Fowler</a></p>
+</article>
+
+<article class="q" data-pop="2" data-tags="behavioral">
+  <div class="qh"><span class="num">073</span><span class="pop p2"><span class="d">●●○○</span>Common</span><span class="tag">Estimating an unfamiliar SSR framework migration</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">Your team needs to estimate a migration from one SSR framework to another (say, Pages Router to App Router). How would you approach that estimate given the genuine architectural differences?</p>
+  <div class="a">
+    <p>This maps onto the general uncertain-estimation principle from earlier in the series, applied to a specific, high-uncertainty migration type — a rendering-model migration (like adopting Server Components) isn't a mechanical find-and-replace, it changes real architectural assumptions throughout the codebase. A strong answer surfaces the <b>specific unknowns</b> driving the uncertainty (how much of the existing code relies on patterns that don't map cleanly to the new model, how much of the team needs to learn a genuinely new mental model, not just new syntax), proposes a small <b>pilot migration</b> of one representative route or feature to calibrate the estimate with real data before committing to a full-scope number, and is explicit that the estimate will need revision once the pilot's actual friction points are known, rather than presenting one number upfront as if the migration's difficulty is already fully understood.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"I wouldn't give one confident number upfront for something with this much genuine architectural uncertainty — a rendering model shift isn't mechanical find-and-replace, it changes real assumptions the existing code was built on. I'd push for a small pilot migration of one representative route first, specifically to surface the real friction points — how much existing code doesn't map cleanly to the new model, how much is genuinely new mental model versus new syntax for the team — and use that pilot's actual data to calibrate a real estimate for the rest, being explicit upfront that the number will get revised once we've actually seen the hard parts rather than guessed at them."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://en.wikipedia.org/wiki/Cone_of_Uncertainty">Cone of uncertainty — reference</a></p>
+</article>
+
+<article class="q" data-pop="1" data-tags="behavioral">
+  <div class="qh"><span class="num">074</span><span class="pop p1"><span class="d">●○○○</span>Occasional</span><span class="tag">Staying current on a fast-moving rendering ecosystem</span><button class="done-btn">Mark done</button></div>
+  <p class="qtitle">The SSR/rendering ecosystem (Server Components, resumability, edge runtimes) has moved unusually fast recently. How do you decide what's worth adopting versus what's hype?</p>
+  <div class="a">
+    <p>This maps onto the general "staying current without chasing hype" principle from earlier in the series, but the SSR/rendering space specifically has had several genuinely paradigm-shifting changes (Server Components) alongside a lot of incremental framework churn — a strong answer distinguishes between the two rather than treating all ecosystem movement as equally significant. The criteria stay the same: does it solve a <b>real, currently-felt</b> problem for this specific app (not a hypothetical one), is there enough <b>production track record</b> to trust it for something real, and is the <b>migration cost</b> proportionate to the actual benefit for this specific team and app, evaluated honestly rather than through excitement about the new pattern itself.</p>
+  </div>
+  <div class="say"><span class="lbl">Say it like this</span>
+    <p>"The same criteria I'd apply anywhere else in the stack apply here too — does it solve a real, currently-felt pain point for this specific app, is there enough production track record to trust it, and is the migration cost proportionate to the actual benefit. What's specific to this space is genuinely distinguishing paradigm shifts, like Server Components, from incremental framework churn that's exciting but not architecturally different — I try not to let genuine excitement about a new rendering pattern substitute for that honest cost-benefit evaluation, especially since this ecosystem in particular tends to generate a lot of hype around ideas that are still maturing."</p>
+  </div>
+  <p class="ref"><b>Doc</b><a href="https://martinfowler.com/bliki/TechnologyRadar.html">Technology radar — Martin Fowler / Thoughtworks</a></p>
+</article>
+</main>
+</div>
+
+<script>
+(function(){
+  const find  = document.getElementById('find');
+  const hits  = document.getElementById('hits');
+  const botones = Array.from(document.querySelectorAll('.fbar button'));
+  const tagbar = document.getElementById('tagbar');
+  const pcount = document.getElementById('pcount');
+  const pfill  = document.getElementById('pfill');
+  const btnPrint  = document.getElementById('btnPrint');
+  const btnExpand = document.getElementById('btnExpand');
+  const presetReset = document.getElementById('presetReset');
+  let minPop = 0;
+  let activeTag = null;
+
+  // properly declared — every block section is an <h2> whose id starts with "s"
+  const cards = Array.from(document.querySelectorAll('.q'));
+  function esSeccion(node){
+    return node.tagName === 'H2' && node.id && /^s\d+$/.test(node.id);
+  }
+
+  cards.forEach(c => c.dataset.txt = c.textContent.toLowerCase());
+
+  // build the tag filter bar from every distinct data-tags value on the page
+  const tagSet = new Set();
+  cards.forEach(c => (c.dataset.tags || '').split(',').forEach(t => { t = t.trim(); if (t) tagSet.add(t); }));
+  const tagCounts = {};
+  tagSet.forEach(t => tagCounts[t] = 0);
+  cards.forEach(c => (c.dataset.tags || '').split(',').forEach(t => { t = t.trim(); if (t) tagCounts[t]++; }));
+  const topTags = Array.from(tagSet).sort((a,b) => tagCounts[b]-tagCounts[a]).slice(0, 14);
+  topTags.forEach(tag => {
+    const b = document.createElement('button');
+    b.textContent = tag;
+    b.dataset.tag = tag;
+    b.addEventListener('click', () => {
+      if (activeTag === tag) { activeTag = null; b.classList.remove('on'); }
+      else {
+        activeTag = tag;
+        Array.from(tagbar.children).forEach(x => x.classList.remove('on'));
+        b.classList.add('on');
+      }
+      aplicar();
+    });
+    tagbar.appendChild(b);
+  });
+
+  // group each block: the h2 and everything following it up to the next block h2
+  const grupos = Array.from(document.querySelectorAll('h2')).filter(esSeccion).map(h => {
+    const nodos = [h];
+    let n = h.nextElementSibling;
+    while (n && !esSeccion(n)) { nodos.push(n); n = n.nextElementSibling; }
+    return { nodos, cards: nodos.filter(x => x.classList.contains('q')) };
+  });
+
+  function aplicar(){
+    const q = find.value.trim().toLowerCase();
+    let visibles = 0;
+    cards.forEach(c => {
+      const popOk = (+c.dataset.pop) >= minPop;
+      const textOk = !q || c.dataset.txt.includes(q);
+      const tags = (c.dataset.tags || '').split(',').map(t => t.trim());
+      const tagOk = !activeTag || tags.includes(activeTag);
+      const ok = popOk && textOk && tagOk;
+      c.classList.toggle('hid', !ok);
+      if (ok) visibles++;
+    });
+    grupos.forEach(g => {
+      const algo = g.cards.some(c => !c.classList.contains('hid'));
+      g.nodos.forEach(n => { if (!n.classList.contains('q')) n.classList.toggle('hid', !algo); });
+    });
+    hits.textContent = (visibles === cards.length)
+      ? cards.length + ' questions'
+      : visibles + ' of ' + cards.length + ' questions';
+  }
+
+  find.addEventListener('input', aplicar);
+  botones.forEach(b => b.addEventListener('click', () => {
+    botones.forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    minPop = +b.dataset.pop;
+    aplicar();
+  }));
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k'){ e.preventDefault(); find.focus(); find.select(); }
+    if (e.key === 'Escape' && document.activeElement === find){ find.value = ''; aplicar(); find.blur(); }
+  });
+
+  // ── progress tracking (persisted to localStorage) ──
+  const STORAGE_KEY = 'ssr-bff-qbank-progress-v1';
+  let done = {};
+  try { done = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e) { done = {}; }
+
+  function idOf(card){
+    const numEl = card.querySelector('.num');
+    return numEl ? numEl.textContent.trim() : null;
+  }
+
+  function saveProgress(){
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(done)); } catch(e) {}
+  }
+
+  function updateProgressUI(){
+    const total = cards.length;
+    const completed = Object.keys(done).filter(k => done[k]).length;
+    pcount.textContent = completed + ' / ' + total;
+    pfill.style.width = (total ? (completed / total * 100) : 0) + '%';
+  }
+
+  cards.forEach(card => {
+    const id = idOf(card);
+    const btn = card.querySelector('.done-btn');
+    if (!id || !btn) return;
+    if (done[id]) { card.classList.add('done'); btn.textContent = 'Done ✓'; }
+    btn.addEventListener('click', () => {
+      const isDone = card.classList.toggle('done');
+      done[id] = isDone;
+      btn.textContent = isDone ? 'Done ✓' : 'Mark done';
+      saveProgress();
+      updateProgressUI();
+    });
+  });
+  updateProgressUI();
+
+  presetReset.addEventListener('click', () => {
+    if (!confirm('Reset all progress? This clears every question marked as done.')) return;
+    done = {};
+    saveProgress();
+    cards.forEach(card => {
+      card.classList.remove('done');
+      const btn = card.querySelector('.done-btn');
+      if (btn) btn.textContent = 'Mark done';
+    });
+    updateProgressUI();
+  });
+
+  // ── top actions ──
+  btnPrint.addEventListener('click', () => window.print());
+
+  let expanded = false;
+  btnExpand.addEventListener('click', () => {
+    // all answers are already visible by default; this toggles a compact mode
+    // that hides the "say it like this" and "doc" blocks for a faster scan.
+    expanded = !expanded;
+    document.body.classList.toggle('compact-mode', expanded);
+    btnExpand.textContent = expanded ? 'Show full answers' : 'Expand all answers';
+  });
+
+  // active nav highlighting while scrolling
+  const navLinks = Array.from(document.querySelectorAll('#nav a[href^="#"]'));
+  const sections = navLinks
+    .map(a => document.getElementById(a.getAttribute('href').slice(1)))
+    .filter(Boolean);
+  function onScroll(){
+    let current = null;
+    sections.forEach(s => { if (s.getBoundingClientRect().top - 80 <= 0) current = s.id; });
+    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+  }
+  document.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  aplicar();
+})();
+</script>
+<style>
+  body.compact-mode .say,
+  body.compact-mode .ref{ display:none; }
+</style>
+</body>
+</html>
