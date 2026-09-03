@@ -27,16 +27,29 @@
       loadSidebar: true, // Enables sidebar generation from _sidebar.md
       subMaxLevel: 2,
       sidebarDisplayLevel: 2, // Controls initial expanded depth
+      alias: {
+        // Redirects nested _sidebar.md lookups to the root file. See CHANGELOG.md.
+        '/.*/_sidebar.md': '/_sidebar.md',
+      },
+      // relativePath left disabled (default) — breaks sidebar nav past the
+      // first level under GH Pages subpaths. See CHANGELOG.md.
       plugins: [
         function (hook) {
           hook.mounted(function () {
             var sidebar = document.querySelector('.sidebar');
-            if (sidebar && !sidebar.querySelector('.app-version')) {
-              var footer = document.createElement('div');
-              footer.className = 'app-version';
-              footer.textContent = 'v0.1.0-alpha';
-              sidebar.appendChild(footer);
-            }
+            if (!sidebar || sidebar.querySelector('.app-version')) return;
+            // package.json is the single source of truth for the version
+            // number shown here — nothing in this file should hardcode it.
+            fetch('package.json')
+              .then(function (res) { return res.json(); })
+              .then(function (pkg) {
+                if (!pkg.version) return;
+                var footer = document.createElement('div');
+                footer.className = 'app-version';
+                footer.textContent = 'v' + pkg.version;
+                sidebar.appendChild(footer);
+              })
+              .catch(function () {});
           });
         }
       ]
