@@ -4,6 +4,14 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project uses [Semantic Versioning](https://semver.org/) pre-release tags.
 
+## [0.1.2-alpha] - 2026-09-04
+
+### Added
+- A project-scoped Claude Code skill (`update-changelog`) that drafts changelog entries and version bumps from the repo's uncommitted/unpushed changes, following this project's Keep a Changelog and semver-alpha conventions, and always asks for confirmation before writing anything.
+
+### Changed
+- Removed the `<iframe>` embed from the three interview-question pages (React, Angular, Python). It carried real ongoing cost — a fixed 500px scroll box, `core-dark.css` fighting the embedded page's own dark mode, and every GitHub Pages path bug fixed in 0.1.1-alpha was a direct consequence of the iframe boundary. Replaced with two buttons: "Open [X] Interview Bank" (opens the standalone page in a new tab) and "Download HTML" (same-origin download, triggered via a dynamically-created `<a download>` so it isn't rewritten by docsify's markdown-link compiler the way a plain `<a>` would be).
+
 ## [0.1.1-alpha] - 2026-09-03
 
 ### Fixed
